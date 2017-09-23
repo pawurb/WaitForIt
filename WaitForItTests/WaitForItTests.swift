@@ -9,7 +9,43 @@
 import XCTest
 @testable import WaitForIt
 
+enum MyScenario {
+    case minEventsTest
+    case maxEventsTest
+    case minMaxEventsTest
+    case nilEventsTest
+}
+
+extension MyScenario: ScenarioProtocol {
+    var minEventsCount: Int? {
+        switch self {
+        case .minEventsTest:
+            return nil
+        case .maxEventsTest:
+            return nil
+        case .minMaxEventsTest:
+            return 2
+        case .nilEventsTest:
+            return nil
+        }
+    }
+    
+    var maxEventsCount: Int? {
+        switch self {
+        case .minEventsTest:
+            return nil
+        case .maxEventsTest:
+            return 2
+        case .minMaxEventsTest:
+            return 2
+        case .nilEventsTest:
+            return nil
+        }
+    }
+}
+
 class WaitForItTests: XCTestCase {
+    
     override func setUp() {
         super.setUp()
     }
@@ -18,11 +54,24 @@ class WaitForItTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        let scenarioHandler = WaitForIt()
-        XCTAssertEqual(scenarioHandler.hello, "there")
+    func testMinRequired() {
+        let scenarioHandler = WaitForIt(scenario: MyScenario.minEventsTest)
+        scenarioHandler.triggerEvent()
+        
+        scenarioHandler.fulfill { conditionsMet in
+            XCTAssertTrue(conditionsMet)
+        }
     }
     
-    func testPerformanceExample() {
+    func testMaxRequired() {
+        
+    }
+    
+    func textMinMaxRequired() {
+        
+    }
+    
+    func textNilRequired() {
+        
     }
 }
