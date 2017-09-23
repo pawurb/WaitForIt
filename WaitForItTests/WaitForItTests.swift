@@ -20,7 +20,7 @@ extension MyScenario: ScenarioProtocol {
     var minEventsCount: Int? {
         switch self {
         case .minEventsTest:
-            return nil
+            return 2
         case .maxEventsTest:
             return nil
         case .minMaxEventsTest:
@@ -45,17 +45,37 @@ extension MyScenario: ScenarioProtocol {
 }
 
 class WaitForItTests: XCTestCase {
-    
     override func setUp() {
         super.setUp()
     }
     
     override func tearDown() {
         super.tearDown()
+        let scenarios: [MyScenario] = [
+            .minEventsTest,
+            .maxEventsTest,
+            .minMaxEventsTest,
+            .nilEventsTest
+        ]
+        scenarios.forEach { scenario in
+            let handler = WaitForIt(scenario: scenario)
+            handler.reset()
+        }
     }
     
     func testMinRequired() {
         let scenarioHandler = WaitForIt(scenario: MyScenario.minEventsTest)
+        
+        scenarioHandler.fulfill { conditionsMet in
+            XCTAssertFalse(conditionsMet)
+        }
+        
+        scenarioHandler.triggerEvent()
+        
+        scenarioHandler.fulfill { conditionsMet in
+            XCTAssertFalse(conditionsMet)
+        }
+        
         scenarioHandler.triggerEvent()
         
         scenarioHandler.fulfill { conditionsMet in

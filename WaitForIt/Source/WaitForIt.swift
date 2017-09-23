@@ -13,12 +13,6 @@ protocol ScenarioProtocol {
     var maxEventsCount: Int? { get }
 }
 
-extension ScenarioProtocol {
-    var description: String {
-        return "dupa"
-    }
-}
-
 struct WaitForIt {
     let scenario: ScenarioProtocol
     private let kDefaultsBase = "net.pabloweb.WaitForIt."
@@ -37,15 +31,21 @@ struct WaitForIt {
     
     func fulfill(completion: @escaping (Bool) -> Void) {
         let currentCount = getCurrentEventsCount()
+        print(currentCount)
         if let max = scenario.maxEventsCount, let min = scenario.minEventsCount {
             completion((max >= currentCount) && (min < currentCount))
         } else if let max = scenario.maxEventsCount {
-            completion(max < currentCount)
+            completion(max >= currentCount)
         } else if let min = scenario.minEventsCount {
-            completion(min > currentCount)
+            completion(min <= currentCount)
         } else {
             completion(false)
         }
+    }
+    
+    func reset() {
+        userDefaults.removeObject(forKey: kDefaultsCount())
+        userDefaults.synchronize()
     }
     
     private func incrementEventsCount() {
