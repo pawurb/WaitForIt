@@ -10,54 +10,24 @@ Dealying with this kind logic usually involves saving some data to UserDefaults 
 
 **WaitForIt** provides a simple api allowing you to handle most of the common scenarios without worrying about underlaying mechanism.
 
-To use it you just declare so called *scenario* and provide attributes determining when a scenario should be fulfilled. Let's say you want to display a tutorial screen only once:
-
-```
-
-
-```
-
+To use it you just declare so called *scenario struct* and provide attributes determining when a scenario should be fulfilled. Let's say you want to display a tutorial screen only once:
 
 ``` swift
-
 struct ShowTutorial: ScenarioProtocol {
-  var minEventsCountRequired: Int? { nil }
-
-
+  static var maxEventsPermitted: Int? = 0
 }
 
-enum MyScenario {
-  case showTutorial
-  case askForReview
-}
-
-extension MyScenarios: ScenarioProtocol {
-  var minEventsCountRequired: Int? {
-    switch self {
-      case .showTutorial:
-        return nil
-      case .askForReview:
-        return 5 // condition will be met only if at least 5 scenario events has been triggered before
-    }
-  }
-
-  var maxEventsCountPermitted: Int? {
-    switch self {
-      case .showTutorial:
-        return 0 // condition will be met only if no scenario events has been triggered yet
-      case .askForReview:
-        return nil
-    }
+func viewDidLoad() {
+  super.viewDidLoad()
+  let scenario = ShowTutorial.self
+  scenario.fulfill { shouldFulfill in
+      if shouldFulfill {
+          scenario.triggerEvent()
+          self.showTutorial()
+      }
   }
 }
-
-let scenario = MyScenario.askForReview
-scenario.triggerEvent()
-
-scenario.fulfill { conditionsMet in
-  if conditionsMet  {
-    //DO STUFF
-  }
-}
-
 ```
+
+That's it! No need to play with UserDefaults, you just have to declare a struct with correct fulfillment conditions, and lib takes care of the rest.
+

@@ -39,86 +39,86 @@ class WaitForItTests: XCTestCase {
     func testMinRequired() {
         let scenario = MinEventsTest.self
         
-        scenario.fulfill { conditionsMet in
-            XCTAssertFalse(conditionsMet)
+        scenario.fulfill { shouldFulfill in
+            XCTAssertFalse(shouldFulfill)
         }
         
         scenario.triggerEvent()
         
-        scenario.fulfill { conditionsMet in
-            XCTAssertFalse(conditionsMet)
+        scenario.fulfill { shouldFulfill in
+            XCTAssertFalse(shouldFulfill)
         }
         
         scenario.triggerEvent()
         
-        scenario.fulfill { conditionsMet in
-            XCTAssertTrue(conditionsMet)
+        scenario.fulfill { shouldFulfill in
+            XCTAssertTrue(shouldFulfill)
         }
     }
     
     func testMaxPermitted() {
         let scenario = MaxEventsTest.self
         
-        scenario.fulfill { conditionsMet in
-            XCTAssertTrue(conditionsMet)
+        scenario.fulfill { shouldFulfill in
+            XCTAssertTrue(shouldFulfill)
         }
         
         scenario.triggerEvent()
         
-        scenario.fulfill { conditionsMet in
-            XCTAssertTrue(conditionsMet)
+        scenario.fulfill { shouldFulfill in
+            XCTAssertTrue(shouldFulfill)
         }
         
         scenario.triggerEvent()
         
-        scenario.fulfill { conditionsMet in
-            XCTAssertTrue(conditionsMet)
+        scenario.fulfill { shouldFulfill in
+            XCTAssertTrue(shouldFulfill)
         }
         
         scenario.triggerEvent()
         
-        scenario.fulfill { conditionsMet in
-            XCTAssertFalse(conditionsMet)
+        scenario.fulfill { shouldFulfill in
+            XCTAssertFalse(shouldFulfill)
         }
     }
 
     func textMinMaxRequired() {
         let scenario = MinMaxEventsTest.self
         
-        scenario.fulfill { conditionsMet in
-            XCTAssertFalse(conditionsMet)
+        scenario.fulfill { shouldFulfill in
+            XCTAssertFalse(shouldFulfill)
         }
         
         scenario.triggerEvent()
         
-        scenario.fulfill { conditionsMet in
-            XCTAssertFalse(conditionsMet)
+        scenario.fulfill { shouldFulfill in
+            XCTAssertFalse(shouldFulfill)
         }
         
         scenario.triggerEvent()
         
-        scenario.fulfill { conditionsMet in
-            XCTAssertTrue(conditionsMet)
+        scenario.fulfill { shouldFulfill in
+            XCTAssertTrue(shouldFulfill)
         }
         
         scenario.triggerEvent()
         
-        scenario.fulfill { conditionsMet in
-            XCTAssertFalse(conditionsMet)
+        scenario.fulfill { shouldFulfill in
+            XCTAssertFalse(shouldFulfill)
         }
     }
 
     func textNoConditions() {
         let scenario = NoConditionsTest.self
         
-        scenario.fulfill { conditionsMet in
-            XCTAssertTrue(conditionsMet)
+        scenario.fulfill { shouldFulfill in
+            XCTAssertTrue(shouldFulfill)
         }
         
         scenario.triggerEvent()
         
-        scenario.fulfill { conditionsMet in
-            XCTAssertTrue(conditionsMet)
+        scenario.fulfill { shouldFulfill in
+            XCTAssertTrue(shouldFulfill)
         }
     }
 }
