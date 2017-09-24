@@ -11,6 +11,7 @@ import Foundation
 protocol ScenarioProtocol {
     static var minEventsRequired: Int? { get }
     static var maxEventsPermitted: Int? { get }
+    static var minDurationSinceFirstEvent: TimeInterval? { get }
     static func triggerEvent()
     static func reset()
     static func fulfill(completion: @escaping (Bool) -> Void)
@@ -24,24 +25,55 @@ extension ScenarioProtocol {
         return nil
     }
     
+    static var minDurationSinceFirstEvent: TimeInterval? {
+        return nil
+    }
+    
     static func triggerEvent() {
+        triggerEvent(timeNow: Date())
+    }
+    
+    static func triggerEvent(timeNow: Date) {
         let newCount = currentEventsCount + 1
         userDefaults.setValuesForKeys([kDefaultsCount: newCount])
+        
+        if userDefaults.object(forKey: kDefaultsFirstEventDate) == nil {
+            userDefaults.setValuesForKeys([kDefaultsFirstEventDate: timeNow])
+        }
+        
         userDefaults.synchronize()
     }
     
-    static func fulfill(completion: @escaping (Bool) -> Void) {
+    static func fulfill(timeNow: Date, completion: @escaping (Bool) -> Void) {
         let currentCount = currentEventsCount
-        print(currentCount)
+        
+        var countBasedConditions: Bool
+        
         if let max = maxEventsPermitted, let min = minEventsRequired {
-            completion((max >= currentCount) && (min <= currentCount))
+            countBasedConditions = (max >= currentCount) && (min <= currentCount)
         } else if let max = maxEventsPermitted {
-            completion(max >= currentCount)
+            countBasedConditions = max >= currentCount
         } else if let min = minEventsRequired {
-            completion(min <= currentCount)
+            countBasedConditions = min <= currentCount
         } else {
-            completion(true)
+            countBasedConditions = true
         }
+        
+        var dateBasedConditions: Bool
+        
+        if let minDuration = minDurationSinceFirstEvent,
+            let firstEventDate = currentFirstEventDate {
+            dateBasedConditions = false
+        } else {
+            dateBasedConditions = true
+        }
+        
+        completion(countBasedConditions && dateBasedConditions)
+    }
+    
+    
+    static func fulfill(completion: @escaping (Bool) -> Void) {
+        fulfill(timeNow: Date(), completion: completion)
     }
     
     static func reset() {
@@ -60,6 +92,10 @@ extension ScenarioProtocol {
         return count
     }
     
+    private static var currentFirstEventDate: Date? {
+        return userDefaults.object(forKey: kDefaultsFirstEventDate) as? Date
+    }
+    
     private static var userDefaults: UserDefaults {
         return UserDefaults.standard
     }
@@ -70,5 +106,9 @@ extension ScenarioProtocol {
     
     private static var kDefaultsCount: String {
         return "\(kDefaultsBase).eventsCount"
+    }
+    
+    private static var kDefaultsFirstEventDate: String {
+        return "\(kDefaultsBase).firstEventDate"
     }
 }

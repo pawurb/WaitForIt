@@ -1,5 +1,5 @@
 //
-//  WaitForItTests.swift
+//  EventsCountTests.swift
 //  WaitForItTests
 //
 //  Created by Paweł Urbanek on 23/09/2017.
@@ -24,7 +24,7 @@ struct MinMaxEventsTest: ScenarioProtocol {
 
 struct NoConditionsTest: ScenarioProtocol {}
 
-class WaitForItTests: XCTestCase {
+class EventsCountTests: XCTestCase {
     override func setUp() {
         super.setUp()
     }
