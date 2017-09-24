@@ -30,12 +30,33 @@ class ExecutionsTests: XCTestCase {
         ExecuteThreeTimesTest.reset()
     }
     
-    func testBasicDate() {
-//        let scenario = BasicDurationTest.self
-//        scenario.triggerEvent()
-//        sleep(2)
-//        scenario.execute { shouldExecute in
-//            XCTAssertTrue(shouldExecute)
-//        }
+    func testExecuteOnce() {
+        let scenario = ExecuteOnceTest.self
+        scenario.execute { shouldExecute in
+            XCTAssertTrue(shouldExecute)
+        }
+        
+        scenario.execute { shouldExecute in
+            XCTAssertFalse(shouldExecute)
+        }
+    }
+    
+    func testExecuteThreeTimes() {
+        let scenario = ExecuteThreeTimesTest.self
+        scenario.execute { shouldExecute in
+            XCTAssertTrue(shouldExecute)
+        }
+        
+        scenario.execute { shouldExecute in
+            XCTAssertTrue(shouldExecute)
+        }
+        
+        scenario.execute { shouldExecute in
+            XCTAssertTrue(shouldExecute)
+        }
+        
+        scenario.execute { shouldExecute in
+            XCTAssertFalse(shouldExecute)
+        }
     }
 }

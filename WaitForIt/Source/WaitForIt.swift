@@ -60,6 +60,12 @@ extension ScenarioProtocol {
         userDefaults.synchronize()
     }
     
+    private static func incrementExecutionsCounter() {
+        let newCount = currentExecutionsCount + 1
+        userDefaults.setValuesForKeys([kDefaultsExecutionsCount: newCount])
+        userDefaults.synchronize()
+    }
+    
     static func execute(timeNow: Date, completion: @escaping (Bool) -> Void) {
         let currentCount = currentEventsCount
         
@@ -80,14 +86,27 @@ extension ScenarioProtocol {
         if let minSecondsInterval = minSecondsSinceFirstEvent,
             let firstEventDate = currentFirstEventDate {
             let secondsSinceFirstEvent = timeNow.timeIntervalSince1970 - firstEventDate.timeIntervalSince1970
-            print(secondsSinceFirstEvent)
             
             dateBasedConditions = secondsSinceFirstEvent > minSecondsInterval
         } else {
             dateBasedConditions = true
         }
         
-        completion(countBasedConditions && dateBasedConditions)
+        var executionBasedConditions: Bool
+        
+        if let maxExecutions = maxExecutionsPermitted {
+            executionBasedConditions = currentExecutionsCount < maxExecutions
+        } else {
+            executionBasedConditions = true
+        }
+        
+        let finalResult = countBasedConditions && dateBasedConditions && executionBasedConditions
+        
+        if finalResult {
+            incrementExecutionsCounter()
+        }
+        
+        completion(finalResult)
     }
     
     
@@ -108,6 +127,17 @@ extension ScenarioProtocol {
     
     private static var currentEventsCount: Int {
         let currentCount = userDefaults.value(forKey: kDefaultsEventsCount)
+        var count = 0
+        
+        if(currentCount != nil) {
+          count = currentCount as! Int
+        }
+        
+        return count
+    }
+    
+    private static var currentExecutionsCount: Int {
+        let currentCount = userDefaults.value(forKey: kDefaultsExecutionsCount)
         var count = 0
         
         if(currentCount != nil) {
