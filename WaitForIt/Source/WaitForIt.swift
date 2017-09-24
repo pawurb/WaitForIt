@@ -21,9 +21,9 @@ protocol ScenarioProtocol {
     
     static func reset()
     
-    static func fulfill(timeNow: Date, completion: @escaping (Bool) -> Void)
+    static func execute(timeNow: Date, completion: @escaping (Bool) -> Void)
     
-    static func fulfill(completion: @escaping (Bool) -> Void)
+    static func execute(completion: @escaping (Bool) -> Void)
 }
 
 extension ScenarioProtocol {
@@ -54,7 +54,7 @@ extension ScenarioProtocol {
         userDefaults.synchronize()
     }
     
-    static func fulfill(timeNow: Date, completion: @escaping (Bool) -> Void) {
+    static func execute(timeNow: Date, completion: @escaping (Bool) -> Void) {
         let currentCount = currentEventsCount
         
         var countBasedConditions: Bool
@@ -85,8 +85,8 @@ extension ScenarioProtocol {
     }
     
     
-    static func fulfill(completion: @escaping (Bool) -> Void) {
-        fulfill(timeNow: Date(), completion: completion)
+    static func execute(completion: @escaping (Bool) -> Void) {
+        execute(timeNow: Date(), completion: completion)
     }
     
     static func reset() {

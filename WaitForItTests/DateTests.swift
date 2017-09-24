@@ -28,8 +28,9 @@ class DateTests: XCTestCase {
     func testBasicDate() {
         let scenario = BasicDurationTest.self
         scenario.triggerEvent()
-        scenario.fulfill { shouldFulfill in
-            XCTAssertTrue(shouldFulfill)
+        sleep(2)
+        scenario.execute { shouldExecute in
+            XCTAssertTrue(shouldExecute)
         }
     }
 }
