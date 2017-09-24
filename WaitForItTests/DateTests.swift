@@ -11,8 +11,12 @@ import Foundation
 import XCTest
 @testable import WaitForIt
 
-struct BasicDurationTest: ScenarioProtocol {
+struct BasicDateTest: ScenarioProtocol {
     static var minSecondsSinceFirstEvent: TimeInterval? = 1
+}
+
+struct MockedDateTest: ScenarioProtocol {
+    static var minSecondsSinceFirstEvent: TimeInterval? = 1500
 }
 
 class DateTests: XCTestCase {
@@ -22,15 +26,30 @@ class DateTests: XCTestCase {
     
     override func tearDown() {
         super.tearDown()
-        BasicDurationTest.reset()
+        BasicDateTest.reset()
+        MockedDateTest.reset()
     }
     
     func testBasicDate() {
-        let scenario = BasicDurationTest.self
+        let scenario = BasicDateTest.self
         scenario.triggerEvent()
         sleep(2)
         scenario.execute { shouldExecute in
             XCTAssertTrue(shouldExecute)
         }
+    }
+    
+    func testMockedDate() {
+        let fakeNow = Date().addingTimeInterval(-2000)
+        let scenario = MockedDateTest.self
+        scenario.triggerEvent(timeNow: fakeNow)
+        
+        scenario.execute { shouldExecute in
+            XCTAssertTrue(shouldExecute)
+        }
+        
+        scenario.execute(timeNow: fakeNow, completion: { shouldExecute in
+            XCTAssertFalse(shouldExecute)
+        })
     }
 }

@@ -13,6 +13,8 @@ protocol ScenarioProtocol {
     
     static var maxEventsPermitted: Int? { get }
     
+    static var maxExecutionsPermitted: Int? { get }
+    
     static var minSecondsSinceFirstEvent: TimeInterval? { get }
     
     static func triggerEvent(timeNow: Date)
@@ -35,6 +37,10 @@ extension ScenarioProtocol {
         return nil
     }
     
+    static var maxExecutionsPermitted: Int? {
+        return nil
+    }
+    
     static var minSecondsSinceFirstEvent: TimeInterval? {
         return nil
     }
@@ -45,7 +51,7 @@ extension ScenarioProtocol {
     
     static func triggerEvent(timeNow: Date) {
         let newCount = currentEventsCount + 1
-        userDefaults.setValuesForKeys([kDefaultsCount: newCount])
+        userDefaults.setValuesForKeys([kDefaultsEventsCount: newCount])
         
         if userDefaults.object(forKey: kDefaultsFirstEventDate) == nil {
             userDefaults.setValuesForKeys([kDefaultsFirstEventDate: timeNow])
@@ -73,7 +79,7 @@ extension ScenarioProtocol {
         
         if let minSecondsInterval = minSecondsSinceFirstEvent,
             let firstEventDate = currentFirstEventDate {
-            let secondsSinceFirstEvent = Date().timeIntervalSince1970 - firstEventDate.timeIntervalSince1970
+            let secondsSinceFirstEvent = timeNow.timeIntervalSince1970 - firstEventDate.timeIntervalSince1970
             print(secondsSinceFirstEvent)
             
             dateBasedConditions = secondsSinceFirstEvent > minSecondsInterval
@@ -90,13 +96,18 @@ extension ScenarioProtocol {
     }
     
     static func reset() {
-        userDefaults.removeObject(forKey: kDefaultsCount)
-        userDefaults.removeObject(forKey: kDefaultsFirstEventDate)
+        [
+            kDefaultsEventsCount,
+            kDefaultsExecutionsCount,
+            kDefaultsFirstEventDate
+        ].forEach { key in
+            userDefaults.removeObject(forKey: key)
+        }
         userDefaults.synchronize()
     }
     
     private static var currentEventsCount: Int {
-        let currentCount = userDefaults.value(forKey: kDefaultsCount)
+        let currentCount = userDefaults.value(forKey: kDefaultsEventsCount)
         var count = 0
         
         if(currentCount != nil) {
@@ -118,8 +129,12 @@ extension ScenarioProtocol {
         return "net.pabloweb.WaitForIt.\(String(describing: self))"
     }
     
-    private static var kDefaultsCount: String {
+    private static var kDefaultsEventsCount: String {
         return "\(kDefaultsBase).eventsCount"
+    }
+    
+    private static var kDefaultsExecutionsCount: String {
+        return "\(kDefaultsBase).executionsCount"
     }
     
     private static var kDefaultsFirstEventDate: String {
