@@ -30,8 +30,7 @@ protocol ScenarioProtocol {
     // same as above but you can mock current date, used internally for testing
     static func triggerEvent(timeNow: Date)
     
-    // try to execute a scenario
-    // Scenario counts as executed only if bool param passed into a block was `true`
+    // try to execute a scenario (it counts as executed only if bool param passed into a block was `true`)
     static func execute(completion: @escaping (Bool) -> Void)
     
     // same as above but you can mock current date, used internally for testing
@@ -158,6 +157,7 @@ extension ScenarioProtocol {
     }
     
     private static func saveLastExecutionDate(timeNow: Date) {
+        print(timeNow)
         userDefaults.setValuesForKeys([kDefaultsLastExecutionDate: timeNow])
         userDefaults.synchronize()
     }
