@@ -13,10 +13,18 @@ import XCTest
 
 struct ExecuteOnceTest: ScenarioProtocol {
     static var maxExecutionsPermitted: Int? = 1
+    
+    static var minEventsRequired: Int? = nil
+    static var maxEventsPermitted: Int? = nil
+    static var minSecondsSinceFirstEvent: TimeInterval? = nil
 }
 
 struct ExecuteThreeTimesTest: ScenarioProtocol {
     static var maxExecutionsPermitted: Int? = 3
+    
+    static var minEventsRequired: Int? = nil
+    static var maxEventsPermitted: Int? = nil
+    static var minSecondsSinceFirstEvent: TimeInterval? = nil
 }
 
 class ExecutionsTests: XCTestCase {

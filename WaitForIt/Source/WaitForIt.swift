@@ -29,22 +29,6 @@ protocol ScenarioProtocol {
 }
 
 extension ScenarioProtocol {
-    static var minEventsRequired: Int? {
-        return nil
-    }
-    
-    static var maxEventsPermitted: Int? {
-        return nil
-    }
-    
-    static var maxExecutionsPermitted: Int? {
-        return nil
-    }
-    
-    static var minSecondsSinceFirstEvent: TimeInterval? {
-        return nil
-    }
-    
     static func triggerEvent() {
         triggerEvent(timeNow: Date())
     }

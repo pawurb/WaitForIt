@@ -13,10 +13,18 @@ import XCTest
 
 struct BasicDateTest: ScenarioProtocol {
     static var minSecondsSinceFirstEvent: TimeInterval? = 1
+    
+    static var minEventsRequired: Int? = nil
+    static var maxEventsPermitted: Int? = nil
+    static var maxExecutionsPermitted: Int? = nil
 }
 
 struct MockedDateTest: ScenarioProtocol {
     static var minSecondsSinceFirstEvent: TimeInterval? = 1500
+    
+    static var minEventsRequired: Int? = nil
+    static var maxEventsPermitted: Int? = nil
+    static var maxExecutionsPermitted: Int? = nil
 }
 
 class DateTests: XCTestCase {

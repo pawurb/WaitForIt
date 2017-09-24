@@ -11,18 +11,34 @@ import XCTest
 
 struct MinEventsTest: ScenarioProtocol {
     static var minEventsRequired: Int? = 2
+    
+    static var maxExecutionsPermitted: Int? = nil
+    static var maxEventsPermitted: Int? = nil
+    static var minSecondsSinceFirstEvent: TimeInterval? = nil
 }
 
 struct MaxEventsTest: ScenarioProtocol {
     static var maxEventsPermitted: Int? = 2
+    
+    static var maxExecutionsPermitted: Int? = nil
+    static var minEventsRequired: Int? = nil
+    static var minSecondsSinceFirstEvent: TimeInterval? = nil
 }
 
 struct MinMaxEventsTest: ScenarioProtocol {
     static var minEventsRequired: Int? = 2
     static var maxEventsPermitted: Int? = 3
+    
+    static var maxExecutionsPermitted: Int? = nil
+    static var minSecondsSinceFirstEvent: TimeInterval? = nil
 }
 
-struct NoConditionsTest: ScenarioProtocol {}
+struct NoConditionsTest: ScenarioProtocol {
+    static var minEventsRequired: Int? = nil
+    static var maxEventsPermitted: Int? = nil
+    static var maxExecutionsPermitted: Int? = nil
+    static var minSecondsSinceFirstEvent: TimeInterval? = nil
+}
 
 class EventsCountTests: XCTestCase {
     override func setUp() {
