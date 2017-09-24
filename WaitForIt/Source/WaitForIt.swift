@@ -10,10 +10,19 @@ import Foundation
 
 protocol ScenarioProtocol {
     static var minEventsRequired: Int? { get }
+    
     static var maxEventsPermitted: Int? { get }
-    static var minDurationSinceFirstEvent: TimeInterval? { get }
+    
+    static var minSecondsSinceFirstEvent: TimeInterval? { get }
+    
+    static func triggerEvent(timeNow: Date)
+    
     static func triggerEvent()
+    
     static func reset()
+    
+    static func fulfill(timeNow: Date, completion: @escaping (Bool) -> Void)
+    
     static func fulfill(completion: @escaping (Bool) -> Void)
 }
 
@@ -21,11 +30,12 @@ extension ScenarioProtocol {
     static var minEventsRequired: Int? {
         return nil
     }
+    
     static var maxEventsPermitted: Int? {
         return nil
     }
     
-    static var minDurationSinceFirstEvent: TimeInterval? {
+    static var minSecondsSinceFirstEvent: TimeInterval? {
         return nil
     }
     
@@ -61,9 +71,12 @@ extension ScenarioProtocol {
         
         var dateBasedConditions: Bool
         
-        if let minDuration = minDurationSinceFirstEvent,
+        if let minSecondsInterval = minSecondsSinceFirstEvent,
             let firstEventDate = currentFirstEventDate {
-            dateBasedConditions = false
+            let secondsSinceFirstEvent = Date().timeIntervalSince1970 - firstEventDate.timeIntervalSince1970
+            print(secondsSinceFirstEvent)
+            
+            dateBasedConditions = secondsSinceFirstEvent > minSecondsInterval
         } else {
             dateBasedConditions = true
         }
@@ -78,6 +91,7 @@ extension ScenarioProtocol {
     
     static func reset() {
         userDefaults.removeObject(forKey: kDefaultsCount)
+        userDefaults.removeObject(forKey: kDefaultsFirstEventDate)
         userDefaults.synchronize()
     }
     

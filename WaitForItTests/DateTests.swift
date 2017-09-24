@@ -12,7 +12,7 @@ import XCTest
 @testable import WaitForIt
 
 struct BasicDurationTest: ScenarioProtocol {
-    static var minDurationSinceFirstEvent: TimeInterval? = 3600
+    static var minSecondsSinceFirstEvent: TimeInterval? = 1
 }
 
 class DateTests: XCTestCase {
@@ -25,10 +25,11 @@ class DateTests: XCTestCase {
         BasicDurationTest.reset()
     }
     
-    func testTest() {
+    func testBasicDate() {
         let scenario = BasicDurationTest.self
+        scenario.triggerEvent()
         scenario.fulfill { shouldFulfill in
-            XCTAssertFalse(shouldFulfill)
+            XCTAssertTrue(shouldFulfill)
         }
     }
 }
