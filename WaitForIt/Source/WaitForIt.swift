@@ -9,23 +9,37 @@
 import Foundation
 
 protocol ScenarioProtocol {
+    // minimum number of scenario events needed to be trigerred before scenario can be executed
     static var minEventsRequired: Int? { get }
     
+    // maximum number of scenario events which can be trigerred before scenario stops executing
     static var maxEventsPermitted: Int? { get }
     
+    
+    // maximum number of times that scenario can be executed
     static var maxExecutionsPermitted: Int? { get }
     
+    // minimum time interval, after the first scenario event was trigerred, before the scenario can be executed
     static var minSecondsSinceFirstEvent: TimeInterval? { get }
     
-    static func triggerEvent(timeNow: Date)
+    // minimum time interval before scenario can be executed again after previous execution
+    static var minSecondsBetweenExecutions: TimeInterval? { get }
     
+    // increment scenario specific event counter
     static func triggerEvent()
     
-    static func reset()
+    // same as above but you can mock current date, used internally for testing
+    static func triggerEvent(timeNow: Date)
     
+    // try to execute a scenario
+    // Scenario counts as executed only if bool param passed into a block was `true`
+    static func execute(completion: @escaping (Bool) -> Void)
+    
+    // same as above but you can mock current date, used internally for testing
     static func execute(timeNow: Date, completion: @escaping (Bool) -> Void)
     
-    static func execute(completion: @escaping (Bool) -> Void)
+    // reset scenario event and execution counters
+    static func reset()
 }
 
 extension ScenarioProtocol {
@@ -41,12 +55,6 @@ extension ScenarioProtocol {
             userDefaults.setValuesForKeys([kDefaultsFirstEventDate: timeNow])
         }
         
-        userDefaults.synchronize()
-    }
-    
-    private static func incrementExecutionsCounter() {
-        let newCount = currentExecutionsCount + 1
-        userDefaults.setValuesForKeys([kDefaultsExecutionsCount: newCount])
         userDefaults.synchronize()
     }
     
@@ -76,18 +84,30 @@ extension ScenarioProtocol {
             dateBasedConditions = true
         }
         
-        var executionBasedConditions: Bool
+        var executionCountBasedConditions: Bool
         
         if let maxExecutions = maxExecutionsPermitted {
-            executionBasedConditions = currentExecutionsCount < maxExecutions
+            executionCountBasedConditions = currentExecutionsCount < maxExecutions
         } else {
-            executionBasedConditions = true
+            executionCountBasedConditions = true
         }
         
-        let finalResult = countBasedConditions && dateBasedConditions && executionBasedConditions
+        var executionDateBasedConditions: Bool
+        
+        if let minSecondsInterval = minSecondsBetweenExecutions,
+            let lastExecutionDate = currentLastExecutionDate {
+            let secondsSinceLastExecution = timeNow.timeIntervalSince1970 - lastExecutionDate.timeIntervalSince1970
+            
+            executionDateBasedConditions = secondsSinceLastExecution > minSecondsInterval
+        } else {
+            executionDateBasedConditions = true
+        }
+        
+        let finalResult = countBasedConditions && dateBasedConditions && executionCountBasedConditions && executionDateBasedConditions
         
         if finalResult {
             incrementExecutionsCounter()
+            saveLastExecutionDate(timeNow: timeNow)
         }
         
         completion(finalResult)
@@ -102,7 +122,8 @@ extension ScenarioProtocol {
         [
             kDefaultsEventsCount,
             kDefaultsExecutionsCount,
-            kDefaultsFirstEventDate
+            kDefaultsFirstEventDate,
+            kDefaultsLastExecutionDate
         ].forEach { key in
             userDefaults.removeObject(forKey: key)
         }
@@ -131,8 +152,23 @@ extension ScenarioProtocol {
         return count
     }
     
+    private static func incrementExecutionsCounter() {
+        let newCount = currentExecutionsCount + 1
+        userDefaults.setValuesForKeys([kDefaultsExecutionsCount: newCount])
+        userDefaults.synchronize()
+    }
+    
+    private static func saveLastExecutionDate(timeNow: Date) {
+        userDefaults.setValuesForKeys([kDefaultsLastExecutionDate: timeNow])
+        userDefaults.synchronize()
+    }
+    
     private static var currentFirstEventDate: Date? {
         return userDefaults.object(forKey: kDefaultsFirstEventDate) as? Date
+    }
+    
+    private static var currentLastExecutionDate: Date? {
+        return userDefaults.object(forKey: kDefaultsLastExecutionDate) as? Date
     }
     
     private static var userDefaults: UserDefaults {
@@ -153,5 +189,9 @@ extension ScenarioProtocol {
     
     private static var kDefaultsFirstEventDate: String {
         return "\(kDefaultsBase).firstEventDate"
+    }
+    
+    private static var kDefaultsLastExecutionDate: String {
+        return "\(kDefaultsBase).lastExecutionDate"
     }
 }

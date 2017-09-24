@@ -15,6 +15,7 @@ struct MinEventsTest: ScenarioProtocol {
     static var maxExecutionsPermitted: Int? = nil
     static var maxEventsPermitted: Int? = nil
     static var minSecondsSinceFirstEvent: TimeInterval? = nil
+    static var minSecondsBetweenExecutions: TimeInterval? = nil
 }
 
 struct MaxEventsTest: ScenarioProtocol {
@@ -23,6 +24,7 @@ struct MaxEventsTest: ScenarioProtocol {
     static var maxExecutionsPermitted: Int? = nil
     static var minEventsRequired: Int? = nil
     static var minSecondsSinceFirstEvent: TimeInterval? = nil
+    static var minSecondsBetweenExecutions: TimeInterval? = nil
 }
 
 struct MinMaxEventsTest: ScenarioProtocol {
@@ -31,6 +33,7 @@ struct MinMaxEventsTest: ScenarioProtocol {
     
     static var maxExecutionsPermitted: Int? = nil
     static var minSecondsSinceFirstEvent: TimeInterval? = nil
+    static var minSecondsBetweenExecutions: TimeInterval? = nil
 }
 
 struct NoConditionsTest: ScenarioProtocol {
@@ -38,6 +41,7 @@ struct NoConditionsTest: ScenarioProtocol {
     static var maxEventsPermitted: Int? = nil
     static var maxExecutionsPermitted: Int? = nil
     static var minSecondsSinceFirstEvent: TimeInterval? = nil
+    static var minSecondsBetweenExecutions: TimeInterval? = nil
 }
 
 class EventsCountTests: XCTestCase {
