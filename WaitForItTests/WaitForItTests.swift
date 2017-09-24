@@ -17,7 +17,7 @@ enum MyScenario {
 }
 
 extension MyScenario: ScenarioProtocol {
-    var minEventsCount: Int? {
+    var minEventsCountRequired: Int? {
         switch self {
         case .minEventsTest:
             return 2
@@ -30,7 +30,7 @@ extension MyScenario: ScenarioProtocol {
         }
     }
     
-    var maxEventsCount: Int? {
+    var maxEventsCountPermitted: Int? {
         switch self {
         case .minEventsTest:
             return nil
@@ -84,6 +84,12 @@ class WaitForItTests: XCTestCase {
     
     func testMaxRequired() {
         let scenario = MyScenario.maxEventsTest
+        
+        scenario.fulfill { conditionsMet in
+            XCTAssertTrue(conditionsMet)
+        }
+        
+        scenario.triggerEvent()
         
         scenario.fulfill { conditionsMet in
             XCTAssertTrue(conditionsMet)

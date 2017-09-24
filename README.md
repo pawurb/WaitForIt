@@ -1,8 +1,8 @@
 
 ``` swift
 protocol ScenarioProtocol {
-  var maxEventsCount: Int? { get }
-  var minEventsCount: Int? { get }
+  var maxEventsCountPermitted: Int? { get }
+  var minEventsCountRequired: Int? { get }
 }
 
 enum MyScenario {
@@ -11,21 +11,21 @@ enum MyScenario {
 }
 
 extension MyScenarios: ScenarioProtocol {
-  var maxEventsCount: Int? {
-    switch self {
-      case .showTutorial:
-        return 1 // condition will be met only if no scenario events has been triggered yet
-      case .askForReview:
-        return nil
-    }
-  }
-
-  var minEventsCount: Int? {
+  var minEventsCountRequired: Int? {
     switch self {
       case .showTutorial:
         return nil
       case .askForReview:
         return 5 // condition will be met only if at least 5 scenario events has been triggered before
+    }
+  }
+
+  var maxEventsCountPermitted: Int? {
+    switch self {
+      case .showTutorial:
+        return 0 // condition will be met only if no scenario events has been triggered yet
+      case .askForReview:
+        return nil
     }
   }
 }

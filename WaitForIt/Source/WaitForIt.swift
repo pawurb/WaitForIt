@@ -9,8 +9,8 @@
 import Foundation
 
 protocol ScenarioProtocol {
-    var minEventsCount: Int? { get }
-    var maxEventsCount: Int? { get }
+    var minEventsCountRequired: Int? { get }
+    var maxEventsCountPermitted: Int? { get }
 }
 
 extension ScenarioProtocol  {
@@ -23,11 +23,11 @@ extension ScenarioProtocol  {
     func fulfill(completion: @escaping (Bool) -> Void) {
         let currentCount = getCurrentEventsCount()
         print(currentCount)
-        if let max = maxEventsCount, let min = minEventsCount {
+        if let max = maxEventsCountPermitted, let min = minEventsCountRequired {
             completion((max >= currentCount) && (min <= currentCount))
-        } else if let max = maxEventsCount {
-            completion(max > currentCount)
-        } else if let min = minEventsCount {
+        } else if let max = maxEventsCountPermitted {
+            completion(max >= currentCount)
+        } else if let min = minEventsCountRequired {
             completion(min <= currentCount)
         } else {
             completion(true)
