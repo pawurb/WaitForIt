@@ -40,7 +40,7 @@ public protocol ScenarioProtocol {
     static func reset()
 }
 
-extension ScenarioProtocol {
+public extension ScenarioProtocol {
     static func triggerEvent() {
         triggerEvent(timeNow: Date())
     }
