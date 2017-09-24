@@ -15,7 +15,6 @@ protocol ScenarioProtocol {
     // maximum number of scenario events which can be trigerred before scenario stops executing
     static var maxEventsPermitted: Int? { get }
     
-    
     // maximum number of times that scenario can be executed
     static var maxExecutionsPermitted: Int? { get }
     
