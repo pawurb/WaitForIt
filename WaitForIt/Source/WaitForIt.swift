@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol ScenarioProtocol {
+public protocol ScenarioProtocol {
     // minimum number of scenario events needed to be trigerred before scenario can be executed
     static var minEventsRequired: Int? { get }
     
