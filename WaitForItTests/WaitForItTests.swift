@@ -37,7 +37,7 @@ extension MyScenario: ScenarioProtocol {
         case .maxEventsTest:
             return 2
         case .minMaxEventsTest:
-            return 2
+            return 3
         case .nilEventsTest:
             return nil
         }
@@ -83,14 +83,62 @@ class WaitForItTests: XCTestCase {
     }
     
     func testMaxRequired() {
+        let scenario = MyScenario.maxEventsTest
         
+        scenario.fulfill { conditionsMet in
+            XCTAssertTrue(conditionsMet)
+        }
+        
+        scenario.triggerEvent()
+        
+        scenario.fulfill { conditionsMet in
+            XCTAssertTrue(conditionsMet)
+        }
+        
+        scenario.triggerEvent()
+        
+        scenario.fulfill { conditionsMet in
+            XCTAssertFalse(conditionsMet)
+        }
     }
     
     func textMinMaxRequired() {
+        let scenario = MyScenario.minMaxEventsTest
         
+        scenario.fulfill { conditionsMet in
+            XCTAssertFalse(conditionsMet)
+        }
+        
+        scenario.triggerEvent()
+        
+        scenario.fulfill { conditionsMet in
+            XCTAssertFalse(conditionsMet)
+        }
+        
+        scenario.triggerEvent()
+        
+        scenario.fulfill { conditionsMet in
+            XCTAssertTrue(conditionsMet)
+        }
+        
+        scenario.triggerEvent()
+        
+        scenario.fulfill { conditionsMet in
+            XCTAssertFalse(conditionsMet)
+        }
     }
     
-    func textNilRequired() {
+    func textNothingRequired() {
+        let scenario = MyScenario.nilEventsTest
         
+        scenario.fulfill { conditionsMet in
+            XCTAssertTrue(conditionsMet)
+        }
+        
+        scenario.triggerEvent()
+        
+        scenario.fulfill { conditionsMet in
+            XCTAssertTrue(conditionsMet)
+        }
     }
 }

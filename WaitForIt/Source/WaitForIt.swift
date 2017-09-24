@@ -26,7 +26,7 @@ extension ScenarioProtocol  {
         if let max = maxEventsCount, let min = minEventsCount {
             completion((max >= currentCount) && (min <= currentCount))
         } else if let max = maxEventsCount {
-            completion(max >= currentCount)
+            completion(max > currentCount)
         } else if let min = minEventsCount {
             completion(min <= currentCount)
         } else {
@@ -55,10 +55,10 @@ extension ScenarioProtocol  {
     }
     
     private var kDefaultsBase: String {
-       return "net.pabloweb.WaitForIt."
+        return "net.pabloweb.WaitForIt.\(String(describing: self))"
     }
     
     private var kDefaultsCount: String {
-        return kDefaultsBase + String(describing: self)
+        return "\(kDefaultsBase).eventsCount"
     }
 }
