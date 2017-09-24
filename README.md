@@ -1,4 +1,4 @@
-# WaitForIt [![Build Status](https://travis-ci.org/pawurb/WaitForIt.svg)](https://travis-ci.org/pawurb/WaitForIt) [![Pod version](https://badge.fury.io/co/WaitForIt.svg)](https://badge.fury.io/co/WaitForIt)[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+# WaitForIt [![Build Status](https://travis-ci.org/pawurb/WaitForIt.svg)](https://travis-ci.org/pawurb/WaitForIt) [![Pod version](https://badge.fury.io/co/WaitForIt.svg)](https://badge.fury.io/co/WaitForIt) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 **WaitForIt** simplifies implementing common app development scenarios, like:
 
@@ -7,6 +7,8 @@
 - *"Ask user to buy a subscription once every 3 days, but no more then 5 times in total."*
 
 Dealing with this kind of logic usually involves manually saving data to `UserDefaults` and has to be redone from scratch for each scenario.
+
+## Usage
 
 **WaitForIt** provides a simple declarative API allowing you to handle most of the possible scenarios without worrying about underlaying implementation.
 
@@ -98,5 +100,47 @@ func application(_ application: UIApplication,
 
 ```
 
+## Installation
 
+### Carthage
+
+```bash
+$ brew update
+$ brew install carthage
+```
+
+In your `Cartfile`:
+
+```ogdl
+github "pawurb/WaitForIt" ~> 0.1.0
+```
+
+Run `carthage update` to build the framework and drag the built `WaitForIt.framework` into your Xcode project.
+
+### Cocoapods
+
+```bash
+$ gem install cocoapods
+```
+
+In your `Podfile`:
+
+```ruby
+platform :ios, '10.0'
+use_frameworks!
+
+target 'TargetName' do
+  pod 'WaitForIt'
+end
+```
+
+Then, run the following command:
+
+```bash
+$ pod install
+```
+
+## Status
+
+Suggestions on how it could be improved are welcome.
 

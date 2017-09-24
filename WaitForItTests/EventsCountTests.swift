@@ -6,6 +6,7 @@
 //  Copyright © 2017 PabloWeb. All rights reserved.
 //
 
+import Foundation
 import XCTest
 @testable import WaitForIt
 

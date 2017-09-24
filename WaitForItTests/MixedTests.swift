@@ -1,5 +1,5 @@
 //
-//  ExecutionsTest.swift
+//  MixedTests.swift
 //  WaitForIt
 //
 //  Created by Paweł Urbanek on 24/09/2017.
@@ -10,37 +10,43 @@ import Foundation
 import XCTest
 @testable import WaitForIt
 
-struct ExecuteOnceTest: ScenarioProtocol {
+struct MixedTestA: ScenarioProtocol {
     static var maxExecutionsPermitted: Int? = 1
+    static var minEventsRequired: Int? = 2
     
-    static var minEventsRequired: Int? = nil
+    static var minSecondsBetweenExecutions: TimeInterval? = nil
     static var maxEventsPermitted: Int? = nil
     static var minSecondsSinceFirstEvent: TimeInterval? = nil
-    static var minSecondsBetweenExecutions: TimeInterval? = nil
 }
 
-struct ExecuteThreeTimesTest: ScenarioProtocol {
-    static var maxExecutionsPermitted: Int? = 3
-    
+struct MixedTestB: ScenarioProtocol {
+    static var minSecondsBetweenExecutions: TimeInterval? = 1
+    static var maxExecutionsPermitted: Int? = nil
     static var minEventsRequired: Int? = nil
-    static var maxEventsPermitted: Int? = nil
+    static var maxEventsPermitted: Int? = 0
     static var minSecondsSinceFirstEvent: TimeInterval? = nil
-    static var minSecondsBetweenExecutions: TimeInterval? = nil
 }
 
-class ExecutionsTests: XCTestCase {
+class MixedTests: XCTestCase {
     override func setUp() {
         super.setUp()
     }
     
     override func tearDown() {
         super.tearDown()
-        ExecuteOnceTest.reset()
-        ExecuteThreeTimesTest.reset()
+        MixedTestA.reset()
+        MixedTestB.reset()
     }
     
-    func testExecuteOnce() {
-        let scenario = ExecuteOnceTest.self
+    func testMixedA() {
+        let scenario = MixedTestA.self
+        scenario.execute { shouldExecute in
+            XCTAssertFalse(shouldExecute)
+        }
+        
+        scenario.triggerEvent()
+        scenario.triggerEvent()
+        
         scenario.execute { shouldExecute in
             XCTAssertTrue(shouldExecute)
         }
@@ -50,19 +56,20 @@ class ExecutionsTests: XCTestCase {
         }
     }
     
-    func testExecuteThreeTimes() {
-        let scenario = ExecuteThreeTimesTest.self
-        scenario.execute { shouldExecute in
-            XCTAssertTrue(shouldExecute)
-        }
+    func testMixedB() {
+        let scenario = MixedTestB.self
         
         scenario.execute { shouldExecute in
             XCTAssertTrue(shouldExecute)
         }
         
         scenario.execute { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+            XCTAssertFalse(shouldExecute)
         }
+        
+        sleep(1)
+        
+        scenario.triggerEvent()
         
         scenario.execute { shouldExecute in
             XCTAssertFalse(shouldExecute)

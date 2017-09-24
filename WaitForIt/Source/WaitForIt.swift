@@ -157,7 +157,6 @@ extension ScenarioProtocol {
     }
     
     private static func saveLastExecutionDate(timeNow: Date) {
-        print(timeNow)
         userDefaults.setValuesForKeys([kDefaultsLastExecutionDate: timeNow])
         userDefaults.synchronize()
     }
