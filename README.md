@@ -1,6 +1,6 @@
 # WaitForIt [![Build Status](https://travis-ci.org/pawurb/WaitForIt.svg)](https://travis-ci.org/pawurb/WaitForIt) [![Pod version](https://badge.fury.io/co/WaitForIt.svg)](https://badge.fury.io/co/WaitForIt) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-**WaitForIt** simplifies implementing common app development scenarios, like:
+**WaitForIt** makes implementing a common iOS app scenerios a breeze:
 
 - *"Display a tutorial screen when user launches an app for the first time."*
 - *"Ask user for a review, but only if he installed the app more then two weeks ago and launched it at least 5 times."*
