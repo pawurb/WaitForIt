@@ -40,39 +40,39 @@ class MixedTests: XCTestCase {
     
     func testMixedA() {
         let scenario = MixedTestA.self
-        scenario.execute { shouldExecute in
-            XCTAssertFalse(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertFalse(didExecute)
         }
         
         scenario.triggerEvent()
         scenario.triggerEvent()
         
-        scenario.execute { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertTrue(didExecute)
         }
         
-        scenario.execute { shouldExecute in
-            XCTAssertFalse(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertFalse(didExecute)
         }
     }
     
     func testMixedB() {
         let scenario = MixedTestB.self
         
-        scenario.execute { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertTrue(didExecute)
         }
         
-        scenario.execute { shouldExecute in
-            XCTAssertFalse(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertFalse(didExecute)
         }
         
         sleep(1)
         
         scenario.triggerEvent()
         
-        scenario.execute { shouldExecute in
-            XCTAssertFalse(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertFalse(didExecute)
         }
     }
 }

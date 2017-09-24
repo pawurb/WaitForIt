@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "WaitForIt"
-  s.version      = "0.4.0"
+  s.version      = "0.5.0"
   s.platform     = :ios
   s.ios.deployment_target = '10.0'
   s.summary      = "In app event and time based scenarios made easy"

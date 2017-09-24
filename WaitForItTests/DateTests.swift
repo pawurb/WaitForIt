@@ -43,8 +43,8 @@ class DateTests: XCTestCase {
         let scenario = BasicDateTest.self
         scenario.triggerEvent()
         sleep(2)
-        scenario.execute { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertTrue(didExecute)
         }
     }
     
@@ -53,12 +53,12 @@ class DateTests: XCTestCase {
         let scenario = MockedDateTest.self
         scenario.triggerEvent(timeNow: fakeNow)
         
-        scenario.execute { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertTrue(didExecute)
         }
         
-        scenario.execute(timeNow: fakeNow, completion: { shouldExecute in
-            XCTAssertFalse(shouldExecute)
+        scenario.tryToExecute(timeNow: fakeNow, completion: { didExecute in
+            XCTAssertFalse(didExecute)
         })
     }
 }

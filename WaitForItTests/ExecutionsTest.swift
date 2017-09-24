@@ -41,31 +41,31 @@ class ExecutionsTests: XCTestCase {
     
     func testExecuteOnce() {
         let scenario = ExecuteOnceTest.self
-        scenario.execute { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertTrue(didExecute)
         }
         
-        scenario.execute { shouldExecute in
-            XCTAssertFalse(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertFalse(didExecute)
         }
     }
     
     func testExecuteThreeTimes() {
         let scenario = ExecuteThreeTimesTest.self
-        scenario.execute { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertTrue(didExecute)
         }
         
-        scenario.execute { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertTrue(didExecute)
         }
         
-        scenario.execute { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertTrue(didExecute)
         }
         
-        scenario.execute { shouldExecute in
-            XCTAssertFalse(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertFalse(didExecute)
         }
     }
 }

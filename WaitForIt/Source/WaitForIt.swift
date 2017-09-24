@@ -31,10 +31,10 @@ public protocol ScenarioProtocol {
     static func triggerEvent(timeNow: Date)
     
     // try to execute a scenario (it counts as executed only if bool param passed into a block was `true`)
-    static func execute(completion: @escaping (Bool) -> Void)
+    static func tryToExecute(completion: @escaping (Bool) -> Void)
     
     // same as above but you can mock current date, used internally for testing
-    static func execute(timeNow: Date, completion: @escaping (Bool) -> Void)
+    static func tryToExecute(timeNow: Date, completion: @escaping (Bool) -> Void)
     
     // reset scenario event and execution counters
     static func reset()
@@ -56,7 +56,7 @@ public extension ScenarioProtocol {
         userDefaults.synchronize()
     }
     
-    static func execute(timeNow: Date, completion: @escaping (Bool) -> Void) {
+    static func tryToExecute(timeNow: Date, completion: @escaping (Bool) -> Void) {
         let currentCount = currentEventsCount
         
         var countBasedConditions: Bool
@@ -112,8 +112,8 @@ public extension ScenarioProtocol {
     }
     
     
-    static func execute(completion: @escaping (Bool) -> Void) {
-        execute(timeNow: Date(), completion: completion)
+    static func tryToExecute(completion: @escaping (Bool) -> Void) {
+        tryToExecute(timeNow: Date(), completion: completion)
     }
     
     static func reset() {

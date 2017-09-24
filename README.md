@@ -41,7 +41,7 @@ You can operate on a scenario struct using three static methods:
     static func triggerEvent()
 
     // try to execute a scenario (it counts as executed only if bool param passed into a block was `true`)
-    static func execute(completion: @escaping (Bool) -> Void)
+    static func tryToExecute(completion: @escaping (Bool) -> Void)
 
     // reset scenario event and execution counters
     static func reset()
@@ -62,8 +62,8 @@ struct ShowTutorial: ScenarioProtocol {
 // In ViewController.swift
 func viewDidLoad() {
     super.viewDidLoad()
-    ShowTutorial.execute { shouldExecute in
-        if shouldExecute {
+    ShowTutorial.tryToExecute { didExecute in
+        if didExecute {
             self.showTutorial()
         }
     }
@@ -89,8 +89,8 @@ func application(_ application: UIApplication,
   didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
     AskToSubscribe.triggerEvent()
-    AskToSubscribe.execute { shouldExecute in
-        if shouldExecute {
+    AskToSubscribe.tryToExecute { didExecute in
+        if didExecute {
             self.askToSubscribe()
         }
     }

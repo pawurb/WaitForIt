@@ -60,86 +60,86 @@ class EventsCountTests: XCTestCase {
     func testMinRequired() {
         let scenario = MinEventsTest.self
         
-        scenario.execute { shouldExecute in
-            XCTAssertFalse(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertFalse(didExecute)
         }
         
         scenario.triggerEvent()
         
-        scenario.execute { shouldExecute in
-            XCTAssertFalse(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertFalse(didExecute)
         }
         
         scenario.triggerEvent()
         
-        scenario.execute { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertTrue(didExecute)
         }
     }
     
     func testMaxPermitted() {
         let scenario = MaxEventsTest.self
         
-        scenario.execute { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertTrue(didExecute)
         }
         
         scenario.triggerEvent()
         
-        scenario.execute { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertTrue(didExecute)
         }
         
         scenario.triggerEvent()
         
-        scenario.execute { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertTrue(didExecute)
         }
         
         scenario.triggerEvent()
         
-        scenario.execute { shouldExecute in
-            XCTAssertFalse(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertFalse(didExecute)
         }
     }
 
     func textMinMaxRequired() {
         let scenario = MinMaxEventsTest.self
         
-        scenario.execute { shouldExecute in
-            XCTAssertFalse(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertFalse(didExecute)
         }
         
         scenario.triggerEvent()
         
-        scenario.execute { shouldExecute in
-            XCTAssertFalse(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertFalse(didExecute)
         }
         
         scenario.triggerEvent()
         
-        scenario.execute { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertTrue(didExecute)
         }
         
         scenario.triggerEvent()
         
-        scenario.execute { shouldExecute in
-            XCTAssertFalse(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertFalse(didExecute)
         }
     }
 
     func textNoConditions() {
         let scenario = NoConditionsTest.self
         
-        scenario.execute { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertTrue(didExecute)
         }
         
         scenario.triggerEvent()
         
-        scenario.execute { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertTrue(didExecute)
         }
     }
 }

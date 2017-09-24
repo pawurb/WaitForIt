@@ -42,22 +42,22 @@ class ExecutionsDateTests: XCTestCase {
     func testExecuteEverySecond() {
         let scenario = ExecuteEverySecondTest.self
         
-        scenario.execute { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertTrue(didExecute)
         }
         
-        scenario.execute { shouldExecute in
-            XCTAssertFalse(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertFalse(didExecute)
         }
         
         sleep(1)
         
-        scenario.execute { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertTrue(didExecute)
         }
         
-        scenario.execute { shouldExecute in
-            XCTAssertFalse(shouldExecute)
+        scenario.tryToExecute { didExecute in
+            XCTAssertFalse(didExecute)
         }
     }
     
@@ -65,18 +65,18 @@ class ExecutionsDateTests: XCTestCase {
         let scenario = MockedExecutionDateTest.self
         let fakeNow = Date().addingTimeInterval(-2000)
         
-        scenario.execute(timeNow: fakeNow, completion: { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+        scenario.tryToExecute(timeNow: fakeNow, completion: { didExecute in
+            XCTAssertTrue(didExecute)
         })
         
         let fakeNotMuchLater = Date().addingTimeInterval(-1500)
-        scenario.execute(timeNow: fakeNotMuchLater, completion: { shouldExecute in
-            XCTAssertFalse(shouldExecute)
+        scenario.tryToExecute(timeNow: fakeNotMuchLater, completion: { didExecute in
+            XCTAssertFalse(didExecute)
         })
         
         let fakeMuchLater = Date().addingTimeInterval(1500)
-        scenario.execute(timeNow: fakeMuchLater, completion: { shouldExecute in
-            XCTAssertTrue(shouldExecute)
+        scenario.tryToExecute(timeNow: fakeMuchLater, completion: { didExecute in
+            XCTAssertTrue(didExecute)
         })
     }
 }
