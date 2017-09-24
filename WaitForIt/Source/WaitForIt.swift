@@ -9,37 +9,47 @@
 import Foundation
 
 protocol ScenarioProtocol {
-    var minEventsCountRequired: Int? { get }
-    var maxEventsCountPermitted: Int? { get }
+    static var minEventsRequired: Int? { get }
+    static var maxEventsPermitted: Int? { get }
+    static func triggerEvent()
+    static func reset()
+    static func fulfill(completion: @escaping (Bool) -> Void)
 }
 
-extension ScenarioProtocol  {
-    func triggerEvent() {
-        let newCount = getCurrentEventsCount() + 1
+extension ScenarioProtocol {
+    static var minEventsRequired: Int? {
+        return nil
+    }
+    static var maxEventsPermitted: Int? {
+        return nil
+    }
+    
+    static func triggerEvent() {
+        let newCount = currentEventsCount + 1
         userDefaults.setValuesForKeys([kDefaultsCount: newCount])
         userDefaults.synchronize()
     }
     
-    func fulfill(completion: @escaping (Bool) -> Void) {
-        let currentCount = getCurrentEventsCount()
+    static func fulfill(completion: @escaping (Bool) -> Void) {
+        let currentCount = currentEventsCount
         print(currentCount)
-        if let max = maxEventsCountPermitted, let min = minEventsCountRequired {
+        if let max = maxEventsPermitted, let min = minEventsRequired {
             completion((max >= currentCount) && (min <= currentCount))
-        } else if let max = maxEventsCountPermitted {
+        } else if let max = maxEventsPermitted {
             completion(max >= currentCount)
-        } else if let min = minEventsCountRequired {
+        } else if let min = minEventsRequired {
             completion(min <= currentCount)
         } else {
             completion(true)
         }
     }
     
-    func reset() {
+    static func reset() {
         userDefaults.removeObject(forKey: kDefaultsCount)
         userDefaults.synchronize()
     }
     
-    private func getCurrentEventsCount() -> Int {
+    private static var currentEventsCount: Int {
         let currentCount = userDefaults.value(forKey: kDefaultsCount)
         var count = 0
         
@@ -50,15 +60,15 @@ extension ScenarioProtocol  {
         return count
     }
     
-    private var userDefaults: UserDefaults {
+    private static var userDefaults: UserDefaults {
         return UserDefaults.standard
     }
     
-    private var kDefaultsBase: String {
+    private static var kDefaultsBase: String {
         return "net.pabloweb.WaitForIt.\(String(describing: self))"
     }
     
-    private var kDefaultsCount: String {
+    private static var kDefaultsCount: String {
         return "\(kDefaultsBase).eventsCount"
     }
 }

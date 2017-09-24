@@ -9,40 +9,20 @@
 import XCTest
 @testable import WaitForIt
 
-enum MyScenario {
-    case minEventsTest
-    case maxEventsTest
-    case minMaxEventsTest
-    case nilEventsTest
+struct MinEventsTest: ScenarioProtocol {
+    static var minEventsRequired: Int? = 2
 }
 
-extension MyScenario: ScenarioProtocol {
-    var minEventsCountRequired: Int? {
-        switch self {
-        case .minEventsTest:
-            return 2
-        case .maxEventsTest:
-            return nil
-        case .minMaxEventsTest:
-            return 2
-        case .nilEventsTest:
-            return nil
-        }
-    }
-    
-    var maxEventsCountPermitted: Int? {
-        switch self {
-        case .minEventsTest:
-            return nil
-        case .maxEventsTest:
-            return 2
-        case .minMaxEventsTest:
-            return 3
-        case .nilEventsTest:
-            return nil
-        }
-    }
+struct MaxEventsTest: ScenarioProtocol {
+    static var maxEventsPermitted: Int? = 2
 }
+
+struct MinMaxEventsTest: ScenarioProtocol {
+    static var minEventsRequired: Int? = 2
+    static var maxEventsPermitted: Int? = 3
+}
+
+struct NoConditionsTest: ScenarioProtocol {}
 
 class WaitForItTests: XCTestCase {
     override func setUp() {
@@ -51,19 +31,13 @@ class WaitForItTests: XCTestCase {
     
     override func tearDown() {
         super.tearDown()
-        let scenarios: [MyScenario] = [
-            .minEventsTest,
-            .maxEventsTest,
-            .minMaxEventsTest,
-            .nilEventsTest
-        ]
-        scenarios.forEach { scenario in
-            scenario.reset()
-        }
+        MinEventsTest.reset()
+        MaxEventsTest.reset()
+        MinMaxEventsTest.reset()
     }
     
     func testMinRequired() {
-        let scenario = MyScenario.minEventsTest
+        let scenario = MinEventsTest.self
         
         scenario.fulfill { conditionsMet in
             XCTAssertFalse(conditionsMet)
@@ -82,8 +56,8 @@ class WaitForItTests: XCTestCase {
         }
     }
     
-    func testMaxRequired() {
-        let scenario = MyScenario.maxEventsTest
+    func testMaxPermitted() {
+        let scenario = MaxEventsTest.self
         
         scenario.fulfill { conditionsMet in
             XCTAssertTrue(conditionsMet)
@@ -107,9 +81,9 @@ class WaitForItTests: XCTestCase {
             XCTAssertFalse(conditionsMet)
         }
     }
-    
+
     func textMinMaxRequired() {
-        let scenario = MyScenario.minMaxEventsTest
+        let scenario = MinMaxEventsTest.self
         
         scenario.fulfill { conditionsMet in
             XCTAssertFalse(conditionsMet)
@@ -133,9 +107,9 @@ class WaitForItTests: XCTestCase {
             XCTAssertFalse(conditionsMet)
         }
     }
-    
-    func textNothingRequired() {
-        let scenario = MyScenario.nilEventsTest
+
+    func textNoConditions() {
+        let scenario = NoConditionsTest.self
         
         scenario.fulfill { conditionsMet in
             XCTAssertTrue(conditionsMet)
