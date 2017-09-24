@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
   s.version      = "0.5.0"
   s.platform     = :ios
   s.ios.deployment_target = '10.0'
-  s.summary      = "Event and time based iOS app scenarios made easy."
+  s.summary      = "Events and time based iOS app scenarios made easy."
   s.description  = <<-DESC
 WaitForIt simplifies implementing common app development scenarios, like:
 "Display a tutorial screen when user launches an app for the first time."

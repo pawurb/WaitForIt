@@ -72,7 +72,7 @@ func viewDidLoad() {
 
 That's it! You no longer need to deal with `UserDefaults` yourself. Just declare a struct with correct execution conditions, and lib takes care of the rest. When all the conditions for your scenario are fulfilled, bool value passed inside the `tryToExecute` block will be `true`.
 
-Let's try a bit more complex scenario. You want to ask user to buy a subscription, if he installed an app at least 1 week ago and turned it on at least 5 times. You want to ask him once every 3 days but no more then 4 times in total:
+Let's try a bit more complex scenario. You want to ask user to buy a subscription, if he installed an app at least 1 week ago and turned it on at least 5 times. You want to ask him once every 2 days but no more then 4 times in total:
 
 ``` swift
 struct AskToSubscribe: ScenarioProtocol {

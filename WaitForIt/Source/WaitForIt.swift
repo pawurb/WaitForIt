@@ -71,15 +71,15 @@ public extension ScenarioProtocol {
             countBasedConditions = true
         }
         
-        var dateBasedConditions: Bool
+        var eventDateBasedConditions: Bool
         
         if let minSecondsInterval = minSecondsSinceFirstEvent,
             let firstEventDate = currentFirstEventDate {
             let secondsSinceFirstEvent = timeNow.timeIntervalSince1970 - firstEventDate.timeIntervalSince1970
             
-            dateBasedConditions = secondsSinceFirstEvent > minSecondsInterval
+            eventDateBasedConditions = secondsSinceFirstEvent > minSecondsInterval
         } else {
-            dateBasedConditions = true
+            eventDateBasedConditions = true
         }
         
         var executionCountBasedConditions: Bool
@@ -101,7 +101,7 @@ public extension ScenarioProtocol {
             executionDateBasedConditions = true
         }
         
-        let finalResult = countBasedConditions && dateBasedConditions && executionCountBasedConditions && executionDateBasedConditions
+        let finalResult = countBasedConditions && eventDateBasedConditions && executionCountBasedConditions && executionDateBasedConditions
         
         if finalResult {
             incrementExecutionsCounter()
