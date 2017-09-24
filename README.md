@@ -1,8 +1,8 @@
 # WaitForIt [![Build Status](https://travis-ci.org/pawurb/WaitForIt.svg)](https://travis-ci.org/pawurb/WaitForIt) [![Pod version](https://badge.fury.io/co/WaitForIt.svg)](https://badge.fury.io/co/WaitForIt) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-**WaitForIt** makes implementing a common iOS app scenerios a breeze:
+**WaitForIt** makes implementing a common iOS app scenarios a breeze:
 
-- *"Display a tutorial screen when user launches an app for the first time."*
+- *"Display a tutorial screen only when user launches an app for the first time."*
 - *"Ask user for a review, but only if he installed the app more then two weeks ago and launched it at least 5 times."*
 - *"Ask user to buy a subscription once every 3 days, but no more then 5 times in total."*
 
@@ -32,7 +32,7 @@ protocol ScenarioProtocol {
 }
 ```
 
-Scenario is a simple struct which conforms to the protocol. You configure all the values which determine when the following scenario will execute. To avoid possible typos you need to define all the properties. All of them being optionals you declare ones that you don't want to use as `nil`.
+Scenario is a simple struct which conforms to the `ScenarioProtocol`. You configure all the values which determine when the following scenario will execute. To avoid possible typos you need to define all the properties. All of them being optionals you declare ones that you don't want to use as `nil`.
 
 You can operate on a scenario struct using three static methods:
 
@@ -54,7 +54,7 @@ struct ShowTutorial: ScenarioProtocol {
     static var maxExecutionsPermitted: Int? = 1
 
     static var maxEventsPermitted: Int? = nil
-    static var maxExecutionsPermitted: Int? = nil
+    static var minEventsRequired: Int? = nil
     static var minSecondsSinceFirstEvent: TimeInterval? = nil
     static var minSecondsBetweenExecutions: TimeInterval? = nil
 }
@@ -100,6 +100,10 @@ func application(_ application: UIApplication,
 
 ```
 
+Even more complex stories could be implemented if you decided to mix conditions from more then one scenario struct.
+
+Implementation is based upon standard `UserDefaults` so data will not persist if app is reinstalled. `UserDefaults` key names are generated with struct names, so renaming the struct will reset all its data. You can also reset persisted data using `reset()` method.
+
 ## Installation
 
 ### Carthage
@@ -142,5 +146,5 @@ $ pod install
 
 ## Status
 
-Suggestions on how it could be improved are welcome.
+Lib is used in production but it is still in an early stage of development. Suggestions on how it could be improved are welcome.
 
