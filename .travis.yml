@@ -1,5 +1,5 @@
 osx_image: xcode8.2
 language: objective-c
-script: xcodebuild test -scheme 'WaitForIt' -destination 'platform=iOS Simulator,name=Generic iOS Simulator Device'
+script: xcodebuild test -scheme 'WaitForIt' -destination 'platform=iOS Simulator,name=iPhone 7,OS=11.0'
 notifications:
   email: false
