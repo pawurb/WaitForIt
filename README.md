@@ -1,4 +1,4 @@
-# WaitForIt
+# WaitForIt [![Build Status](https://travis-ci.org/pawurb/WaitForIt.svg)](https://travis-ci.org/pawurb/WaitForIt) [![Pod version](https://badge.fury.io/co/WaitForIt.svg)](https://badge.fury.io/co/WaitForIt)[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 **WaitForIt** simplifies implementing common app development scenarios, like:
 
