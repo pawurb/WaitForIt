@@ -13,49 +13,34 @@ protocol ScenarioProtocol {
     var maxEventsCount: Int? { get }
 }
 
-struct WaitForIt {
-    let scenario: ScenarioProtocol
-    private let kDefaultsBase = "net.pabloweb.WaitForIt."
-    
-    var userDefaults: UserDefaults {
-        return UserDefaults.standard
-    }
-    
-    init(scenario: ScenarioProtocol) {
-        self.scenario = scenario
-    }
-    
+extension ScenarioProtocol  {
     func triggerEvent() {
-        incrementEventsCount()
+        let newCount = getCurrentEventsCount() + 1
+        userDefaults.setValuesForKeys([kDefaultsCount: newCount])
+        userDefaults.synchronize()
     }
     
     func fulfill(completion: @escaping (Bool) -> Void) {
         let currentCount = getCurrentEventsCount()
         print(currentCount)
-        if let max = scenario.maxEventsCount, let min = scenario.minEventsCount {
-            completion((max >= currentCount) && (min < currentCount))
-        } else if let max = scenario.maxEventsCount {
+        if let max = maxEventsCount, let min = minEventsCount {
+            completion((max >= currentCount) && (min <= currentCount))
+        } else if let max = maxEventsCount {
             completion(max >= currentCount)
-        } else if let min = scenario.minEventsCount {
+        } else if let min = minEventsCount {
             completion(min <= currentCount)
         } else {
-            completion(false)
+            completion(true)
         }
     }
     
     func reset() {
-        userDefaults.removeObject(forKey: kDefaultsCount())
-        userDefaults.synchronize()
-    }
-    
-    private func incrementEventsCount() {
-        let newCount = getCurrentEventsCount() + 1
-        userDefaults.setValuesForKeys([kDefaultsCount(): newCount])
+        userDefaults.removeObject(forKey: kDefaultsCount)
         userDefaults.synchronize()
     }
     
     private func getCurrentEventsCount() -> Int {
-        let currentCount = userDefaults.value(forKey: kDefaultsCount())
+        let currentCount = userDefaults.value(forKey: kDefaultsCount)
         var count = 0
         
         if(currentCount != nil) {
@@ -65,7 +50,15 @@ struct WaitForIt {
         return count
     }
     
-    private func kDefaultsCount() -> String {
-        return kDefaultsBase + String(describing: scenario)
+    private var userDefaults: UserDefaults {
+        return UserDefaults.standard
+    }
+    
+    private var kDefaultsBase: String {
+       return "net.pabloweb.WaitForIt."
+    }
+    
+    private var kDefaultsCount: String {
+        return kDefaultsBase + String(describing: self)
     }
 }

@@ -58,27 +58,26 @@ class WaitForItTests: XCTestCase {
             .nilEventsTest
         ]
         scenarios.forEach { scenario in
-            let handler = WaitForIt(scenario: scenario)
-            handler.reset()
+            scenario.reset()
         }
     }
     
     func testMinRequired() {
-        let scenarioHandler = WaitForIt(scenario: MyScenario.minEventsTest)
+        let scenario = MyScenario.minEventsTest
         
-        scenarioHandler.fulfill { conditionsMet in
+        scenario.fulfill { conditionsMet in
             XCTAssertFalse(conditionsMet)
         }
         
-        scenarioHandler.triggerEvent()
+        scenario.triggerEvent()
         
-        scenarioHandler.fulfill { conditionsMet in
+        scenario.fulfill { conditionsMet in
             XCTAssertFalse(conditionsMet)
         }
         
-        scenarioHandler.triggerEvent()
+        scenario.triggerEvent()
         
-        scenarioHandler.fulfill { conditionsMet in
+        scenario.fulfill { conditionsMet in
             XCTAssertTrue(conditionsMet)
         }
     }

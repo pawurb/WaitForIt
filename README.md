@@ -5,7 +5,7 @@ protocol ScenarioProtocol {
   var minEventsCount: Int? { get }
 }
 
-enum MyScenarios {
+enum MyScenario {
   case showTutorial
   case askForReview
 }
@@ -30,10 +30,10 @@ extension MyScenarios: ScenarioProtocol {
   }
 }
 
-let scenarioHandler = WaitForIt(scenario: .askForReview)
-scenarioHandler.triggerEvent()
+let scenario = MyScenario.askForReview
+scenario.triggerEvent()
 
-scenarioHandler.fulfill { conditionsMet in
+scenario.fulfill { conditionsMet in
   if conditionsMet  {
     //DO STUFF
   }
