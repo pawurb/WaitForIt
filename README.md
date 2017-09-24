@@ -6,7 +6,7 @@
 - *"Ask user for a review, but only if he installed the app more then two weeks ago and launched it at least 5 times."*
 - *"Ask user to buy a subscription once every 3 days, but no more then 5 times in total."*
 
-Dealing with this kind logic usually involves manually saving data to `UserDefaults` and has to be redone from scratch for each scenario.
+Dealing with this kind of logic usually involves manually saving data to `UserDefaults` and has to be redone from scratch for each scenario.
 
 **WaitForIt** provides a simple declarative API allowing you to handle most of the possible scenarios without worrying about underlaying implementation.
 
@@ -38,8 +38,7 @@ You can operate on a scenario struct using three static methods:
     // increment scenario specific event counter
     static func triggerEvent()
 
-    // try to execute a scenario
-    // Scenario counts as executed only if bool param passed into a block was `true`
+    // try to execute a scenario (it counts as executed only if bool param passed into a block was `true`)
     static func execute(completion: @escaping (Bool) -> Void)
 
     // reset scenario event and execution counters
