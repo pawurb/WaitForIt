@@ -16,6 +16,7 @@ struct ExecuteOnceTest: ScenarioProtocol {
     static var minEventsRequired: Int? = nil
     static var maxEventsPermitted: Int? = nil
     static var minSecondsSinceFirstEvent: TimeInterval? = nil
+    static var minSecondsSinceLastEvent: TimeInterval? = nil
     static var minSecondsBetweenExecutions: TimeInterval? = nil
     static var customConditions: (() -> Bool)? = nil
 }
@@ -26,6 +27,7 @@ struct ExecuteThreeTimesTest: ScenarioProtocol {
     static var minEventsRequired: Int? = nil
     static var maxEventsPermitted: Int? = nil
     static var minSecondsSinceFirstEvent: TimeInterval? = nil
+    static var minSecondsSinceLastEvent: TimeInterval? = nil
     static var minSecondsBetweenExecutions: TimeInterval? = nil
     static var customConditions: (() -> Bool)? = nil
 }

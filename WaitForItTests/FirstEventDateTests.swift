@@ -1,5 +1,5 @@
 //
-//  DateTests.swift
+//  FirstEventDateTests.swift
 //  WaitForIt
 //
 //  Created by Paweł Urbanek on 24/09/2017.
@@ -10,9 +10,10 @@ import Foundation
 import XCTest
 @testable import WaitForIt
 
-struct BasicDateTest: ScenarioProtocol {
+struct BasicFirstDateTest: ScenarioProtocol {
     static var minSecondsSinceFirstEvent: TimeInterval? = 1
     
+    static var minSecondsSinceLastEvent: TimeInterval? = nil
     static var minEventsRequired: Int? = nil
     static var maxEventsPermitted: Int? = nil
     static var maxExecutionsPermitted: Int? = nil
@@ -20,9 +21,10 @@ struct BasicDateTest: ScenarioProtocol {
     static var customConditions: (() -> Bool)? = nil
 }
 
-struct MockedDateTest: ScenarioProtocol {
+struct MockedFirstDateTest: ScenarioProtocol {
     static var minSecondsSinceFirstEvent: TimeInterval? = 1500
     
+    static var minSecondsSinceLastEvent: TimeInterval? = nil
     static var minEventsRequired: Int? = nil
     static var maxEventsPermitted: Int? = nil
     static var maxExecutionsPermitted: Int? = nil
@@ -30,29 +32,29 @@ struct MockedDateTest: ScenarioProtocol {
     static var customConditions: (() -> Bool)? = nil
 }
 
-class DateTests: XCTestCase {
+class FirstEventDateTests: XCTestCase {
     override func setUp() {
         super.setUp()
     }
     
     override func tearDown() {
         super.tearDown()
-        BasicDateTest.reset()
-        MockedDateTest.reset()
+        BasicFirstDateTest.reset()
+        MockedFirstDateTest.reset()
     }
     
-    func testBasicDate() {
-        let scenario = BasicDateTest.self
+    func testBasicFirstDate() {
+        let scenario = BasicFirstDateTest.self
         scenario.triggerEvent()
-        sleep(2)
+        sleep(1)
         scenario.tryToExecute { didExecute in
             XCTAssertTrue(didExecute)
         }
     }
     
-    func testMockedDate() {
+    func testMockedFirstDate() {
         let fakeNow = Date().addingTimeInterval(-2000)
-        let scenario = MockedDateTest.self
+        let scenario = MockedFirstDateTest.self
         scenario.triggerEvent(timeNow: fakeNow)
         
         scenario.tryToExecute { didExecute in

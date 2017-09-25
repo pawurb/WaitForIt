@@ -23,6 +23,7 @@ struct CustomConditionA: ScenarioProtocol {
     static var minSecondsBetweenExecutions: TimeInterval? = nil
     static var maxEventsPermitted: Int? = nil
     static var minSecondsSinceFirstEvent: TimeInterval? = nil
+    static var minSecondsSinceLastEvent: TimeInterval? = nil
 }
 
 struct CustomConditionB: ScenarioProtocol {
@@ -35,6 +36,7 @@ struct CustomConditionB: ScenarioProtocol {
     static var minSecondsBetweenExecutions: TimeInterval? = nil
     static var maxEventsPermitted: Int? = nil
     static var minSecondsSinceFirstEvent: TimeInterval? = nil
+    static var minSecondsSinceLastEvent: TimeInterval? = nil
 }
 
 class CustomConditionsTests: XCTestCase {

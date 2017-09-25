@@ -5,6 +5,7 @@
 - *"Display a tutorial screen only when user launches an app for the first time."*
 - *"Ask user for a review, but only if he installed the app more then two weeks ago and launched it at least 5 times."*
 - *"Ask registered user to buy a subscription once every 3 days, but no more then 5 times in total."*
+- *"Ask user to share some content on Facebook, if he did not do it since 4 days."*
 
 Dealing with this kind of logic usually involves manually saving data to `UserDefaults` and has to be redone from scratch for each scenario.
 
@@ -26,6 +27,9 @@ protocol ScenarioProtocol {
 
     // minimum time interval, after the first scenario event was trigerred, before the scenario can be executed
     static var minSecondsSinceFirstEvent: TimeInterval? { get }
+
+    // minimum time interval, after the last scenario event was trigerred, before the scenario can be executed
+    static var minSecondsSinceLastEvent: TimeInterval? { get }
 
     // minimum time interval before scenario can be executed again after previous execution
     static var minSecondsBetweenExecutions: TimeInterval? { get }

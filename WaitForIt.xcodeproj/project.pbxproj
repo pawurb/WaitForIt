@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6EB7F9D51F77F80B005F8A25 /* DateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB7F9D41F77F80B005F8A25 /* DateTests.swift */; };
+		6E07F5FB1F79A127002FF537 /* LastEventDateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E07F5FA1F79A127002FF537 /* LastEventDateTests.swift */; };
+		6EB7F9D51F77F80B005F8A25 /* FirstEventDateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB7F9D41F77F80B005F8A25 /* FirstEventDateTests.swift */; };
 		6EB7F9D71F7803D5005F8A25 /* ExecutionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB7F9D61F7803D5005F8A25 /* ExecutionsTest.swift */; };
 		6EB7F9D91F783D1C005F8A25 /* ExecutionsDateTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB7F9D81F783D1C005F8A25 /* ExecutionsDateTest.swift */; };
 		6EB7F9DB1F784CDE005F8A25 /* MixedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB7F9DA1F784CDE005F8A25 /* MixedTests.swift */; };
@@ -29,7 +30,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6EB7F9D41F77F80B005F8A25 /* DateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTests.swift; sourceTree = "<group>"; };
+		6E07F5FA1F79A127002FF537 /* LastEventDateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastEventDateTests.swift; sourceTree = "<group>"; };
+		6EB7F9D41F77F80B005F8A25 /* FirstEventDateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstEventDateTests.swift; sourceTree = "<group>"; };
 		6EB7F9D61F7803D5005F8A25 /* ExecutionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExecutionsTest.swift; sourceTree = "<group>"; };
 		6EB7F9D81F783D1C005F8A25 /* ExecutionsDateTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExecutionsDateTest.swift; sourceTree = "<group>"; };
 		6EB7F9DA1F784CDE005F8A25 /* MixedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MixedTests.swift; sourceTree = "<group>"; };
@@ -93,7 +95,8 @@
 		6EBAFD9F1F76A93F007B6ABF /* WaitForItTests */ = {
 			isa = PBXGroup;
 			children = (
-				6EB7F9D41F77F80B005F8A25 /* DateTests.swift */,
+				6EB7F9D41F77F80B005F8A25 /* FirstEventDateTests.swift */,
+				6E07F5FA1F79A127002FF537 /* LastEventDateTests.swift */,
 				6EBAFDA01F76A93F007B6ABF /* EventsCountTests.swift */,
 				6EB7F9D81F783D1C005F8A25 /* ExecutionsDateTest.swift */,
 				6EB7F9D61F7803D5005F8A25 /* ExecutionsTest.swift */,
@@ -238,7 +241,8 @@
 				6EB7F9D71F7803D5005F8A25 /* ExecutionsTest.swift in Sources */,
 				6EB7F9DB1F784CDE005F8A25 /* MixedTests.swift in Sources */,
 				6EBAFDA11F76A93F007B6ABF /* EventsCountTests.swift in Sources */,
-				6EB7F9D51F77F80B005F8A25 /* DateTests.swift in Sources */,
+				6EB7F9D51F77F80B005F8A25 /* FirstEventDateTests.swift in Sources */,
+				6E07F5FB1F79A127002FF537 /* LastEventDateTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

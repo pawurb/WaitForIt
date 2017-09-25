@@ -17,6 +17,7 @@ struct MixedTestA: ScenarioProtocol {
     static var minSecondsBetweenExecutions: TimeInterval? = nil
     static var maxEventsPermitted: Int? = nil
     static var minSecondsSinceFirstEvent: TimeInterval? = nil
+    static var minSecondsSinceLastEvent: TimeInterval? = nil
     static var customConditions: (() -> Bool)? = nil
 }
 
@@ -26,6 +27,7 @@ struct MixedTestB: ScenarioProtocol {
     static var minEventsRequired: Int? = nil
     static var maxEventsPermitted: Int? = 0
     static var minSecondsSinceFirstEvent: TimeInterval? = nil
+    static var minSecondsSinceLastEvent: TimeInterval? = nil
     static var customConditions: (() -> Bool)? = nil
 }
 
