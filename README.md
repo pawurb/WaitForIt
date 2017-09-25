@@ -50,6 +50,8 @@ You can operate on a scenario struct using three static methods:
 Let's say you want to display a tutorial screen only once:
 
 ``` swift
+import WaitForIt
+
 struct ShowTutorial: ScenarioProtocol {
     static var maxExecutionsPermitted: Int? = 1
 
@@ -75,6 +77,8 @@ That's it! You no longer need to deal with `UserDefaults` yourself. Just declare
 Let's try a bit more complex scenario. You want to ask user to buy a subscription, if he installed an app at least 1 week ago and turned it on at least 5 times. You want to ask him once every 2 days but no more then 4 times in total:
 
 ``` swift
+import WaitForIt
+
 struct AskToSubscribe: ScenarioProtocol {
     static var minEventsRequired: Int? = 5
     static var minSecondsSinceFirstEvent: TimeInterval? = 604 800 // seconds in one week
