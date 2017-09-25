@@ -104,7 +104,7 @@ func application(_ application: UIApplication,
 
 ```
 
-Even more complex stories could be implemented if you decided to mix conditions from more then one scenario struct.
+Even more complex stories could be implemented if you decided to mix conditions from more then one scenario struct. Of course you could also scatter event triggers and scenario executions throughout the app, they don't need to be in the same file.
 
 Implementation is based upon standard `UserDefaults` so data will not persist if app is reinstalled. `UserDefaults` key names are generated with struct names, so renaming the struct will reset all its data. You can also reset persisted data using `reset()` method.
 
