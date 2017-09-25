@@ -4,7 +4,7 @@
 
 - *"Display a tutorial screen only when user launches an app for the first time."*
 - *"Ask user for a review, but only if he installed the app more then two weeks ago and launched it at least 5 times."*
-- *"Ask user to buy a subscription once every 3 days, but no more then 5 times in total."*
+- *"Ask registered user to buy a subscription once every 3 days, but no more then 5 times in total."*
 
 Dealing with this kind of logic usually involves manually saving data to `UserDefaults` and has to be redone from scratch for each scenario.
 
@@ -115,19 +115,12 @@ func application(_ application: UIApplication,
 
 ### Custom conditions
 
-If time and event count based conditions are not enough for your scenario you can also define a custom conditions closure:
+If time and event count based conditions are not enough for your scenario you can also define a custom conditions closure. It will be evaluated every time you try to execute a scenario:
 
 ``` swift
-struct ShowLowEnergyAlertOnce: ScenarioProtocol {
+struct ShowLowBrightnessAlertOnce: ScenarioProtocol {
     static var customConditions: (() -> Bool)? = {
-        let lowEnergyLimit: Float = 0.20
-        UIDevice.current.isBatteryMonitoringEnabled = true
-        switch UIDevice.current.batteryState {
-        case .charging, .unknown, .full:
-            return false
-        case .unplugged:
-            return UIDevice.current.batteryLevel < lowEnergyLimit
-        }
+        return UIScreen.main.brightness < 0.3
     }
     static var maxExecutionsPermitted: Int? = 1
 
