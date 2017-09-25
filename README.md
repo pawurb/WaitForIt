@@ -116,7 +116,7 @@ $ brew install carthage
 In your `Cartfile`:
 
 ```ogdl
-github "pawurb/WaitForIt" ~> 0.4.0
+github "pawurb/WaitForIt" ~> 1.0.0
 ```
 
 Run `carthage update` to build the framework and drag the built `WaitForIt.framework` into your Xcode project.
