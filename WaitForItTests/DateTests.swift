@@ -17,6 +17,7 @@ struct BasicDateTest: ScenarioProtocol {
     static var maxEventsPermitted: Int? = nil
     static var maxExecutionsPermitted: Int? = nil
     static var minSecondsBetweenExecutions: TimeInterval? = nil
+    static var customConditions: (() -> Bool)? = nil
 }
 
 struct MockedDateTest: ScenarioProtocol {
@@ -26,6 +27,7 @@ struct MockedDateTest: ScenarioProtocol {
     static var maxEventsPermitted: Int? = nil
     static var maxExecutionsPermitted: Int? = nil
     static var minSecondsBetweenExecutions: TimeInterval? = nil
+    static var customConditions: (() -> Bool)? = nil
 }
 
 class DateTests: XCTestCase {

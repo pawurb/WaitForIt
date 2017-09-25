@@ -29,6 +29,9 @@ protocol ScenarioProtocol {
 
     // minimum time interval before scenario can be executed again after previous execution
     static var minSecondsBetweenExecutions: TimeInterval? { get }
+
+    // custom conditions closure
+    static var customConditions: (() -> Bool)? { get }
 }
 ```
 
@@ -47,6 +50,8 @@ You can operate on a scenario struct using static methods:
     static func reset()
 ```
 
+### Basic example
+
 Let's say you want to display a tutorial screen only once:
 
 ``` swift
@@ -59,6 +64,7 @@ struct ShowTutorial: ScenarioProtocol {
     static var minEventsRequired: Int? = nil
     static var minSecondsSinceFirstEvent: TimeInterval? = nil
     static var minSecondsBetweenExecutions: TimeInterval? = nil
+    static var customConditions: (() -> Bool)? = nil
 }
 
 // In ViewController.swift
@@ -74,6 +80,8 @@ func viewDidLoad() {
 
 That's it! You no longer need to deal with `UserDefaults` yourself. Just declare a struct with correct execution conditions, and lib takes care of the rest. When all the conditions for your scenario are fulfilled, bool value passed inside the `tryToExecute` block will be `true`.
 
+### More conditions
+
 Let's try a bit more complex scenario. You want to ask user to buy a subscription, if he installed an app at least 1 week ago and turned it on at least 5 times. You want to ask him once every 2 days but no more then 4 times in total:
 
 ``` swift
@@ -86,6 +94,7 @@ struct AskToSubscribe: ScenarioProtocol {
     static var minSecondsBetweenExecutions: Int? = 172 800 // seconds in two days
 
     static var maxEventsPermitted: Int? = nil
+    static var customConditions: (() -> Bool)? = nil
 }
 
 // In AppDelegate.swift
@@ -102,6 +111,31 @@ func application(_ application: UIApplication,
     return true
 }
 
+```
+
+### Custom conditions
+
+If time and event count conditions are not enough for your scenario you can also define a custom conditions closure:
+
+``` swift
+struct ShowLowEnergyAlertOnce: ScenarioProtocol {
+    static var customConditions: (() -> Bool)? = {
+        let lowEnergyLimit: Float = 0.20
+        UIDevice.current.isBatteryMonitoringEnabled = true
+        switch UIDevice.current.batteryState {
+        case .charging, .unknown:
+            return false
+        default:
+            return UIDevice.current.batteryLevel < lowEnergyLimit
+        }
+    }
+    static var maxExecutionsPermitted: Int? = 1
+
+    static var minEventsRequired: Int? = nil
+    static var minSecondsSinceFirstEvent: TimeInterval? = nil
+    static var minSecondsBetweenExecutions: Int? = nil
+    static var maxEventsPermitted: Int? = nil
+}
 ```
 
 Even more complex stories could be implemented if you decided to mix conditions from more then one scenario struct. Of course you could also scatter event triggers and scenario executions throughout the app, they don't need to be in the same file.

@@ -24,6 +24,9 @@ public protocol ScenarioProtocol {
     // minimum time interval before scenario can be executed again after previous execution
     static var minSecondsBetweenExecutions: TimeInterval? { get }
     
+    // custom conditions closure 
+    static var customConditions: (() -> Bool)? { get }
+    
     // increment scenario specific event counter
     static func triggerEvent()
     
@@ -61,8 +64,9 @@ public extension ScenarioProtocol {
         let eventDateConditions = checkEventDateConditions(timeNow: timeNow)
         let executionCountConditions = checkExecutionCountConditions()
         let executionDateConditions = checkExecutionDateConditions(timeNow: timeNow)
+        let customConditionsValue = checkCustomConditions()
         
-        let finalResult = eventCountConditions && eventDateConditions && executionCountConditions && executionDateConditions
+        let finalResult = eventCountConditions && eventDateConditions && executionCountConditions && executionDateConditions && customConditionsValue
         
         if finalResult {
             incrementExecutionsCounter()
@@ -124,6 +128,18 @@ public extension ScenarioProtocol {
             let secondsSinceLastExecution = timeNow.timeIntervalSince1970 - lastExecutionDate.timeIntervalSince1970
             
             result = secondsSinceLastExecution > minSecondsInterval
+        } else {
+            result = true
+        }
+        
+        return result
+    }
+    
+    private static func checkCustomConditions() -> Bool {
+        let result: Bool
+        
+        if let customConditionsBlock = customConditions {
+            result = customConditionsBlock()
         } else {
             result = true
         }
