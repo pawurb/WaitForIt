@@ -57,51 +57,12 @@ public extension ScenarioProtocol {
     }
     
     static func tryToExecute(timeNow: Date, completion: @escaping (Bool) -> Void) {
-        let currentCount = currentEventsCount
+        let eventCountConditions = checkEventCountConditions()
+        let eventDateConditions = checkEventDateConditions(timeNow: timeNow)
+        let executionCountConditions = checkExecutionCountConditions()
+        let executionDateConditions = checkExecutionDateConditions(timeNow: timeNow)
         
-        var countBasedConditions: Bool
-        
-        if let max = maxEventsPermitted, let min = minEventsRequired {
-            countBasedConditions = (max >= currentCount) && (min <= currentCount)
-        } else if let max = maxEventsPermitted {
-            countBasedConditions = max >= currentCount
-        } else if let min = minEventsRequired {
-            countBasedConditions = min <= currentCount
-        } else {
-            countBasedConditions = true
-        }
-        
-        var eventDateBasedConditions: Bool
-        
-        if let minSecondsInterval = minSecondsSinceFirstEvent,
-            let firstEventDate = currentFirstEventDate {
-            let secondsSinceFirstEvent = timeNow.timeIntervalSince1970 - firstEventDate.timeIntervalSince1970
-            
-            eventDateBasedConditions = secondsSinceFirstEvent > minSecondsInterval
-        } else {
-            eventDateBasedConditions = true
-        }
-        
-        var executionCountBasedConditions: Bool
-        
-        if let maxExecutions = maxExecutionsPermitted {
-            executionCountBasedConditions = currentExecutionsCount < maxExecutions
-        } else {
-            executionCountBasedConditions = true
-        }
-        
-        var executionDateBasedConditions: Bool
-        
-        if let minSecondsInterval = minSecondsBetweenExecutions,
-            let lastExecutionDate = currentLastExecutionDate {
-            let secondsSinceLastExecution = timeNow.timeIntervalSince1970 - lastExecutionDate.timeIntervalSince1970
-            
-            executionDateBasedConditions = secondsSinceLastExecution > minSecondsInterval
-        } else {
-            executionDateBasedConditions = true
-        }
-        
-        let finalResult = countBasedConditions && eventDateBasedConditions && executionCountBasedConditions && executionDateBasedConditions
+        let finalResult = eventCountConditions && eventDateConditions && executionCountConditions && executionDateConditions
         
         if finalResult {
             incrementExecutionsCounter()
@@ -111,6 +72,64 @@ public extension ScenarioProtocol {
         completion(finalResult)
     }
     
+    private static func checkEventCountConditions() -> Bool {
+        let result: Bool
+        
+        let currentCount = currentEventsCount
+        if let max = maxEventsPermitted, let min = minEventsRequired {
+            result = (max >= currentCount) && (min <= currentCount)
+        } else if let max = maxEventsPermitted {
+            result = max >= currentCount
+        } else if let min = minEventsRequired {
+            result = min <= currentCount
+        } else {
+            result = true
+        }
+        
+        return result
+    }
+    
+    private static func checkEventDateConditions(timeNow: Date) -> Bool {
+        let result: Bool
+        
+        if let minSecondsInterval = minSecondsSinceFirstEvent,
+            let firstEventDate = currentFirstEventDate {
+            let secondsSinceFirstEvent = timeNow.timeIntervalSince1970 - firstEventDate.timeIntervalSince1970
+            
+            result = secondsSinceFirstEvent > minSecondsInterval
+        } else {
+            result = true
+        }
+        
+        return result
+    }
+    
+    private static func checkExecutionCountConditions() -> Bool {
+        let result: Bool
+        
+        if let maxExecutions = maxExecutionsPermitted {
+            result = currentExecutionsCount < maxExecutions
+        } else {
+            result = true
+        }
+        
+        return result
+    }
+    
+    private static func checkExecutionDateConditions(timeNow: Date) -> Bool {
+        let result: Bool
+        
+        if let minSecondsInterval = minSecondsBetweenExecutions,
+            let lastExecutionDate = currentLastExecutionDate {
+            let secondsSinceLastExecution = timeNow.timeIntervalSince1970 - lastExecutionDate.timeIntervalSince1970
+            
+            result = secondsSinceLastExecution > minSecondsInterval
+        } else {
+            result = true
+        }
+        
+        return result
+    }
     
     static func tryToExecute(completion: @escaping (Bool) -> Void) {
         tryToExecute(timeNow: Date(), completion: completion)
@@ -128,7 +147,7 @@ public extension ScenarioProtocol {
         userDefaults.synchronize()
     }
     
-    private static var currentEventsCount: Int {
+    static var currentEventsCount: Int {
         let currentCount = userDefaults.value(forKey: kDefaultsEventsCount)
         var count = 0
         
@@ -139,7 +158,7 @@ public extension ScenarioProtocol {
         return count
     }
     
-    private static var currentExecutionsCount: Int {
+    static var currentExecutionsCount: Int {
         let currentCount = userDefaults.value(forKey: kDefaultsExecutionsCount)
         var count = 0
         
@@ -161,11 +180,11 @@ public extension ScenarioProtocol {
         userDefaults.synchronize()
     }
     
-    private static var currentFirstEventDate: Date? {
+    static var currentFirstEventDate: Date? {
         return userDefaults.object(forKey: kDefaultsFirstEventDate) as? Date
     }
     
-    private static var currentLastExecutionDate: Date? {
+    static var currentLastExecutionDate: Date? {
         return userDefaults.object(forKey: kDefaultsLastExecutionDate) as? Date
     }
     
