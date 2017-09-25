@@ -149,7 +149,7 @@ Implementation is based upon standard `UserDefaults` so data will not persist if
 In your `Cartfile`:
 
 ```ogdl
-github "pawurb/WaitForIt" ~> 1.0.0
+github "pawurb/WaitForIt" ~> 1.1.0
 ```
 
 ### Cocoapods

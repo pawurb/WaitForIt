@@ -24,7 +24,7 @@ public protocol ScenarioProtocol {
     // minimum time interval before scenario can be executed again after previous execution
     static var minSecondsBetweenExecutions: TimeInterval? { get }
     
-    // custom conditions closure 
+    // custom conditions closure
     static var customConditions: (() -> Bool)? { get }
     
     // increment scenario specific event counter
