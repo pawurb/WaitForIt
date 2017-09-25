@@ -34,7 +34,7 @@ protocol ScenarioProtocol {
 
 Scenario is a simple struct which conforms to the `ScenarioProtocol`. You configure all the values which determine when the following scenario will execute. To avoid possible typos you need to define all the properties. All of them being optionals you declare ones that you don't want to use as `nil`.
 
-You can operate on a scenario struct using three static methods:
+You can operate on a scenario struct using static methods:
 
 ``` swift
     // increment scenario specific event counter
@@ -112,24 +112,13 @@ Implementation is based upon standard `UserDefaults` so data will not persist if
 
 ### Carthage
 
-```bash
-$ brew update
-$ brew install carthage
-```
-
 In your `Cartfile`:
 
 ```ogdl
 github "pawurb/WaitForIt" ~> 1.0.0
 ```
 
-Run `carthage update` to build the framework and drag the built `WaitForIt.framework` into your Xcode project.
-
 ### Cocoapods
-
-```bash
-$ gem install cocoapods
-```
 
 In your `Podfile`:
 
@@ -140,12 +129,6 @@ use_frameworks!
 target 'TargetName' do
   pod 'WaitForIt'
 end
-```
-
-Then, run the following command:
-
-```bash
-$ pod install
 ```
 
 ## Status
