@@ -115,7 +115,7 @@ func application(_ application: UIApplication,
 
 ### Custom conditions
 
-If time and event count conditions are not enough for your scenario you can also define a custom conditions closure:
+If time and event count based conditions are not enough for your scenario you can also define a custom conditions closure:
 
 ``` swift
 struct ShowLowEnergyAlertOnce: ScenarioProtocol {
@@ -123,9 +123,9 @@ struct ShowLowEnergyAlertOnce: ScenarioProtocol {
         let lowEnergyLimit: Float = 0.20
         UIDevice.current.isBatteryMonitoringEnabled = true
         switch UIDevice.current.batteryState {
-        case .charging, .unknown:
+        case .charging, .unknown, .full:
             return false
-        default:
+        case .unplugged:
             return UIDevice.current.batteryLevel < lowEnergyLimit
         }
     }
