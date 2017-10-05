@@ -14,29 +14,15 @@ import XCTest
 @testable import WaitForIt
 
 struct CustomConditionA: ScenarioProtocol {
-    static var customConditions: (() -> Bool)? = {
-        return true
+    static func config() {
+        customConditions = { return true }
     }
-    
-    static var maxExecutionsPermitted: Int? = nil
-    static var minEventsRequired: Int? = nil
-    static var minSecondsBetweenExecutions: TimeInterval? = nil
-    static var maxEventsPermitted: Int? = nil
-    static var minSecondsSinceFirstEvent: TimeInterval? = nil
-    static var minSecondsSinceLastEvent: TimeInterval? = nil
 }
 
 struct CustomConditionB: ScenarioProtocol {
-    static var customConditions: (() -> Bool)? = {
-        return false
+    static func config() {
+        customConditions = { return false }
     }
-    
-    static var maxExecutionsPermitted: Int? = nil
-    static var minEventsRequired: Int? = nil
-    static var minSecondsBetweenExecutions: TimeInterval? = nil
-    static var maxEventsPermitted: Int? = nil
-    static var minSecondsSinceFirstEvent: TimeInterval? = nil
-    static var minSecondsSinceLastEvent: TimeInterval? = nil
 }
 
 class CustomConditionsTests: XCTestCase {

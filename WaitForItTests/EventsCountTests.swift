@@ -11,46 +11,26 @@ import XCTest
 @testable import WaitForIt
 
 struct MinEventsTest: ScenarioProtocol {
-    static var minEventsRequired: Int? = 2
-    
-    static var maxExecutionsPermitted: Int? = nil
-    static var maxEventsPermitted: Int? = nil
-    static var minSecondsSinceFirstEvent: TimeInterval? = nil
-    static var minSecondsSinceLastEvent: TimeInterval? = nil
-    static var minSecondsBetweenExecutions: TimeInterval? = nil
-    static var customConditions: (() -> Bool)? = nil
+    static func config() {
+        minEventsRequired = 2
+    }
 }
 
 struct MaxEventsTest: ScenarioProtocol {
-    static var maxEventsPermitted: Int? = 2
-    
-    static var maxExecutionsPermitted: Int? = nil
-    static var minEventsRequired: Int? = nil
-    static var minSecondsSinceFirstEvent: TimeInterval? = nil
-    static var minSecondsSinceLastEvent: TimeInterval? = nil
-    static var minSecondsBetweenExecutions: TimeInterval? = nil
-    static var customConditions: (() -> Bool)? = nil
+    static func config() {
+        maxEventsPermitted = 2
+    }
 }
 
 struct MinMaxEventsTest: ScenarioProtocol {
-    static var minEventsRequired: Int? = 2
-    static var maxEventsPermitted: Int? = 3
-    
-    static var maxExecutionsPermitted: Int? = nil
-    static var minSecondsSinceFirstEvent: TimeInterval? = nil
-    static var minSecondsSinceLastEvent: TimeInterval? = nil
-    static var minSecondsBetweenExecutions: TimeInterval? = nil
-    static var customConditions: (() -> Bool)? = nil
+    static func config() {
+        minEventsRequired = 2
+        maxEventsPermitted = 3
+    }
 }
 
 struct NoConditionsTest: ScenarioProtocol {
-    static var minEventsRequired: Int? = nil
-    static var maxEventsPermitted: Int? = nil
-    static var maxExecutionsPermitted: Int? = nil
-    static var minSecondsSinceFirstEvent: TimeInterval? = nil
-    static var minSecondsSinceLastEvent: TimeInterval? = nil
-    static var minSecondsBetweenExecutions: TimeInterval? = nil
-    static var customConditions: (() -> Bool)? = nil
+    static func config() {}
 }
 
 class EventsCountTests: XCTestCase {

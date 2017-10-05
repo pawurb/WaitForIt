@@ -11,25 +11,15 @@ import XCTest
 @testable import WaitForIt
 
 struct ExecuteOnceTest: ScenarioProtocol {
-    static var maxExecutionsPermitted: Int? = 1
-    
-    static var minEventsRequired: Int? = nil
-    static var maxEventsPermitted: Int? = nil
-    static var minSecondsSinceFirstEvent: TimeInterval? = nil
-    static var minSecondsSinceLastEvent: TimeInterval? = nil
-    static var minSecondsBetweenExecutions: TimeInterval? = nil
-    static var customConditions: (() -> Bool)? = nil
+    static func config() {
+        maxExecutionsPermitted = 1
+    }
 }
 
 struct ExecuteThreeTimesTest: ScenarioProtocol {
-    static var maxExecutionsPermitted: Int? = 3
-    
-    static var minEventsRequired: Int? = nil
-    static var maxEventsPermitted: Int? = nil
-    static var minSecondsSinceFirstEvent: TimeInterval? = nil
-    static var minSecondsSinceLastEvent: TimeInterval? = nil
-    static var minSecondsBetweenExecutions: TimeInterval? = nil
-    static var customConditions: (() -> Bool)? = nil
+    static func config() {
+        maxExecutionsPermitted = 3
+    }
 }
 
 class ExecutionsTests: XCTestCase {

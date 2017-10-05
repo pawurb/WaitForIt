@@ -11,25 +11,15 @@ import XCTest
 @testable import WaitForIt
 
 struct BasicFirstDateTest: ScenarioProtocol {
-    static var minSecondsSinceFirstEvent: TimeInterval? = 1
-    
-    static var minSecondsSinceLastEvent: TimeInterval? = nil
-    static var minEventsRequired: Int? = nil
-    static var maxEventsPermitted: Int? = nil
-    static var maxExecutionsPermitted: Int? = nil
-    static var minSecondsBetweenExecutions: TimeInterval? = nil
-    static var customConditions: (() -> Bool)? = nil
+    static func config() {
+        minSecondsSinceFirstEvent = 1
+    }
 }
 
 struct MockedFirstDateTest: ScenarioProtocol {
-    static var minSecondsSinceFirstEvent: TimeInterval? = 1500
-    
-    static var minSecondsSinceLastEvent: TimeInterval? = nil
-    static var minEventsRequired: Int? = nil
-    static var maxEventsPermitted: Int? = nil
-    static var maxExecutionsPermitted: Int? = nil
-    static var minSecondsBetweenExecutions: TimeInterval? = nil
-    static var customConditions: (() -> Bool)? = nil
+    static func config() {
+        minSecondsSinceFirstEvent = 1500
+    }
 }
 
 class FirstEventDateTests: XCTestCase {

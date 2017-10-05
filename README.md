@@ -16,30 +16,33 @@ Dealing with this kind of logic usually involves manually saving data to `UserDe
 `ScenarioProtocol` has the following properties which can be used to define when a scenario should be executed:
 ``` swift
 protocol ScenarioProtocol {
+    // function used to provide properties values
+    static func config()
+
     // minimum number of scenario events needed to be trigerred before scenario can be executed
-    static var minEventsRequired: Int? { get }
+    static var minEventsRequired: Int? { get set }
 
     // maximum number of scenario events which can be trigerred before scenario stops executing
-    static var maxEventsPermitted: Int? { get }
+    static var maxEventsPermitted: Int? { get set }
 
     // maximum number of times that scenario can be executed
-    static var maxExecutionsPermitted: Int? { get }
+    static var maxExecutionsPermitted: Int? { get set }
 
     // minimum time interval, after the first scenario event was trigerred, before the scenario can be executed
-    static var minSecondsSinceFirstEvent: TimeInterval? { get }
+    static var minSecondsSinceFirstEvent: TimeInterval? { get set }
 
     // minimum time interval, after the last scenario event was trigerred, before the scenario can be executed
-    static var minSecondsSinceLastEvent: TimeInterval? { get }
+    static var minSecondsSinceLastEvent: TimeInterval? { get set }
 
     // minimum time interval before scenario can be executed again after previous execution
-    static var minSecondsBetweenExecutions: TimeInterval? { get }
+    static var minSecondsBetweenExecutions: TimeInterval? { get set }
 
     // custom conditions closure
-    static var customConditions: (() -> Bool)? { get }
+    static var customConditions: (() -> Bool)? { get set }
 }
 ```
 
-Scenario is a simple struct which conforms to the `ScenarioProtocol`. You configure all the values which determine when the following scenario will execute. To avoid possible typos you need to define all the properties. All of them being optionals you declare ones that you don't want to use as `nil`.
+Scenario is a simple struct which conforms to the `ScenarioProtocol`. You configure the values which determine when the following scenario will execute using a `config` function.
 
 You can operate on a scenario struct using static methods:
 
@@ -62,14 +65,9 @@ Let's say you want to display a tutorial screen only once:
 import WaitForIt
 
 struct ShowTutorial: ScenarioProtocol {
-    static var maxExecutionsPermitted: Int? = 1
-
-    static var maxEventsPermitted: Int? = nil
-    static var minEventsRequired: Int? = nil
-    static var minSecondsSinceFirstEvent: TimeInterval? = nil
-    static var minSecondsSinceLastEvent: TimeInterval? = nil
-    static var minSecondsBetweenExecutions: TimeInterval? = nil
-    static var customConditions: (() -> Bool)? = nil
+    static func config() {
+        maxExecutionsPermitted = 1
+    }
 }
 
 // In ViewController.swift
@@ -93,14 +91,12 @@ Let's try a bit more complex scenario. You want to ask user to buy a subscriptio
 import WaitForIt
 
 struct AskToSubscribe: ScenarioProtocol {
-    static var minEventsRequired: Int? = 5
-    static var minSecondsSinceFirstEvent: TimeInterval? = 604 800 // seconds in one week
-    static var maxExecutionsPermitted: Int? = 4
-    static var minSecondsBetweenExecutions: Int? = 172 800 // seconds in two days
-
-    static var maxEventsPermitted: Int? = nil
-    static var minSecondsSinceLastEvent: TimeInterval? = nil
-    static var customConditions: (() -> Bool)? = nil
+    static func config() {
+        minEventsRequired = 5
+        minSecondsSinceFirstEvent = 604 800 // seconds in one week
+        maxExecutionsPermitted = 4
+        minSecondsBetweenExecutions = 172 800 // seconds in two days
+    }
 }
 
 // In AppDelegate.swift
@@ -125,16 +121,12 @@ If time and event count based conditions are not enough for your scenario you ca
 
 ``` swift
 struct ShowLowBrightnessAlertOnce: ScenarioProtocol {
-    static var customConditions: (() -> Bool)? = {
-        return UIScreen.main.brightness < 0.3
+    static func config() {
+        customConditions = {
+            return UIScreen.main.brightness < 0.3
+        }
+        maxExecutionsPermitted = 1
     }
-    static var maxExecutionsPermitted: Int? = 1
-
-    static var minEventsRequired: Int? = nil
-    static var minSecondsSinceFirstEvent: TimeInterval? = nil
-    static var minSecondsSinceLastEvent: TimeInterval? = nil
-    static var minSecondsBetweenExecutions: Int? = nil
-    static var maxEventsPermitted: Int? = nil
 }
 ```
 
