@@ -16,9 +16,6 @@ Dealing with this kind of logic usually involves manually saving data to `UserDe
 `ScenarioProtocol` has the following properties which can be used to define when a scenario should be executed:
 ``` swift
 protocol ScenarioProtocol {
-    // function used to provide properties values
-    static func config()
-
     // minimum number of scenario events needed to be trigerred before scenario can be executed
     static var minEventsRequired: Int? { get set }
 
@@ -42,7 +39,7 @@ protocol ScenarioProtocol {
 }
 ```
 
-Scenario is a simple struct which conforms to the `ScenarioProtocol`. You configure the values which determine when the following scenario will execute using a `config` function.
+Scenario is a simple struct which implements a single `config` function. You use it to configure values determining when a given scenario will execute.
 
 You can operate on a scenario struct using static methods:
 
@@ -81,7 +78,7 @@ func viewDidLoad() {
 }
 ```
 
-That's it! You no longer need to deal with `UserDefaults` yourself. Just declare a struct with correct execution conditions, and lib takes care of the rest. When all the conditions for your scenario are fulfilled, bool value passed inside the `tryToExecute` block will be `true`.
+That's it! You no longer need to deal with `UserDefaults` yourself. Just configure a struct with correct execution conditions, and lib takes care of the rest. When all the conditions for your scenario are fulfilled, bool value passed inside the `tryToExecute` block will be `true`.
 
 ### More conditions
 
