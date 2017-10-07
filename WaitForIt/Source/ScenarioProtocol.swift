@@ -52,38 +52,38 @@ public protocol ScenarioProtocol {
 
 public extension ScenarioProtocol {
     static var customConditions: (() -> Bool)? {
-        get { return config.customConditions }
-        set { config.customConditions = newValue }
+        get { return configStorage.customConditions }
+        set { configStorage.customConditions = newValue }
     }
 
     static var maxExecutionsPermitted: Int? {
-        get { return config.maxExecutionsPermitted }
-        set { config.maxExecutionsPermitted = newValue }
+        get { return configStorage.maxExecutionsPermitted }
+        set { configStorage.maxExecutionsPermitted = newValue }
     }
 
     static var minEventsRequired: Int? {
-        get { return config.minEventsRequired }
-        set { config.minEventsRequired = newValue }
+        get { return configStorage.minEventsRequired }
+        set { configStorage.minEventsRequired = newValue }
     }
 
     static var minSecondsBetweenExecutions: TimeInterval? {
-        get { return config.minSecondsBetweenExecutions }
-        set { config.minSecondsBetweenExecutions = newValue }
+        get { return configStorage.minSecondsBetweenExecutions }
+        set { configStorage.minSecondsBetweenExecutions = newValue }
     }
 
     static var maxEventsPermitted: Int? {
-        get { return config.maxEventsPermitted }
-        set { config.maxEventsPermitted = newValue }
+        get { return configStorage.maxEventsPermitted }
+        set { configStorage.maxEventsPermitted = newValue }
     }
 
     static var minSecondsSinceFirstEvent: TimeInterval? {
-        get { return config.minSecondsSinceFirstEvent }
-        set { config.minSecondsSinceFirstEvent = newValue }
+        get { return configStorage.minSecondsSinceFirstEvent }
+        set { configStorage.minSecondsSinceFirstEvent = newValue }
     }
 
     static var minSecondsSinceLastEvent: TimeInterval? {
-        get { return config.minSecondsSinceLastEvent }
-        set { config.minSecondsSinceLastEvent = newValue }
+        get { return configStorage.minSecondsSinceLastEvent }
+        set { configStorage.minSecondsSinceLastEvent = newValue }
     }
 
     static func triggerEvent() {
@@ -92,7 +92,7 @@ public extension ScenarioProtocol {
     
     static func triggerEvent(timeNow: Date) {
         config()
-        stats.saveEventStats(timeNow: timeNow)
+        statsStorage.saveEventStats(timeNow: timeNow)
     }
     
     static func tryToExecute(timeNow: Date, completion: @escaping (Bool) -> Void) {
@@ -107,8 +107,8 @@ public extension ScenarioProtocol {
         let finalResult = eventCountConditions && firstEventDateConditions && lastEventDateConditions && executionCountConditions && executionDateConditions && customConditionsValue
         
         if finalResult {
-            incrementExecutionsCounter()
-            saveLastExecutionDate(timeNow: timeNow)
+            statsStorage.incrementExecutionsCounter()
+            statsStorage.saveLastExecutionDate(timeNow: timeNow)
         }
         
         completion(finalResult)
@@ -117,7 +117,7 @@ public extension ScenarioProtocol {
     private static func checkEventCountConditions() -> Bool {
         let result: Bool
 
-        let currentCount = stats.currentEventsCount
+        let currentCount = statsStorage.currentEventsCount
         if let max = maxEventsPermitted, let min = minEventsRequired {
             result = (max >= currentCount) && (min <= currentCount)
         } else if let max = maxEventsPermitted {
@@ -135,7 +135,7 @@ public extension ScenarioProtocol {
         let result: Bool
         
         if let minSecondsInterval = minSecondsSinceFirstEvent,
-            let firstEventDate = stats.currentFirstEventDate {
+            let firstEventDate = statsStorage.currentFirstEventDate {
             let secondsSinceFirstEvent = timeNow.timeIntervalSince1970 - firstEventDate.timeIntervalSince1970
             
             result = secondsSinceFirstEvent > minSecondsInterval
@@ -150,7 +150,7 @@ public extension ScenarioProtocol {
         let result: Bool
 
         if let minSecondsInterval = minSecondsSinceLastEvent,
-            let lastEventDate = stats.currentLastEventDate {
+            let lastEventDate = statsStorage.currentLastEventDate {
             let secondsSinceLastEvent = timeNow.timeIntervalSince1970 - lastEventDate.timeIntervalSince1970
 
             result = secondsSinceLastEvent > minSecondsInterval
@@ -165,7 +165,7 @@ public extension ScenarioProtocol {
         let result: Bool
         
         if let maxExecutions = maxExecutionsPermitted {
-            result = stats.currentExecutionsCount < maxExecutions
+            result = statsStorage.currentExecutionsCount < maxExecutions
         } else {
             result = true
         }
@@ -177,7 +177,7 @@ public extension ScenarioProtocol {
         let result: Bool
         
         if let minSecondsInterval = minSecondsBetweenExecutions,
-            let lastExecutionDate = stats.currentLastExecutionDate {
+            let lastExecutionDate = statsStorage.currentLastExecutionDate {
             let secondsSinceLastExecution = timeNow.timeIntervalSince1970 - lastExecutionDate.timeIntervalSince1970
             
             result = secondsSinceLastExecution > minSecondsInterval
@@ -206,22 +206,14 @@ public extension ScenarioProtocol {
     
     static func reset() {
         config()
-        stats.reset()
+        statsStorage.reset()
     }
     
-    private static func incrementExecutionsCounter() {
-        stats.incrementExecutionsCounter()
-    }
-    
-    private static func saveLastExecutionDate(timeNow: Date) {
-        stats.saveLastExecutionDate(timeNow: timeNow)
-    }
-    
-    private static var stats: StatsStorage<Self> {
+    private static var statsStorage: StatsStorage<Self> {
         return StatsStorage<Self>()
     }
 
-    private static var config: ConfigStorage<Self> {
+    private static var configStorage: ConfigStorage<Self> {
         get { return ConfigStorage<Self>() }
         set {}
     }
