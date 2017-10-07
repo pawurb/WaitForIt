@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6E07F5FB1F79A127002FF537 /* LastEventDateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E07F5FA1F79A127002FF537 /* LastEventDateTests.swift */; };
+		6E5C635F1F88F5E700229D21 /* StatsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E5C635E1F88F5E700229D21 /* StatsStorage.swift */; };
 		6EB7F9D51F77F80B005F8A25 /* FirstEventDateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB7F9D41F77F80B005F8A25 /* FirstEventDateTests.swift */; };
 		6EB7F9D71F7803D5005F8A25 /* ExecutionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB7F9D61F7803D5005F8A25 /* ExecutionsTest.swift */; };
 		6EB7F9D91F783D1C005F8A25 /* ExecutionsDateTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EB7F9D81F783D1C005F8A25 /* ExecutionsDateTest.swift */; };
@@ -15,7 +16,7 @@
 		6EBAFD9C1F76A93F007B6ABF /* WaitForIt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EBAFD921F76A93F007B6ABF /* WaitForIt.framework */; };
 		6EBAFDA11F76A93F007B6ABF /* EventsCountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBAFDA01F76A93F007B6ABF /* EventsCountTests.swift */; };
 		6EBAFDA31F76A93F007B6ABF /* WaitForIt.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EBAFD951F76A93F007B6ABF /* WaitForIt.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6EBAFDAE1F76A9A8007B6ABF /* WaitForIt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBAFDAD1F76A9A8007B6ABF /* WaitForIt.swift */; };
+		6EBAFDAE1F76A9A8007B6ABF /* ScenarioProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EBAFDAD1F76A9A8007B6ABF /* ScenarioProtocol.swift */; };
 		6EC6264E1F79594D00DCD91D /* CustomConditionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC6264D1F79594D00DCD91D /* CustomConditionsTest.swift */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		6E07F5FA1F79A127002FF537 /* LastEventDateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastEventDateTests.swift; sourceTree = "<group>"; };
+		6E5C635E1F88F5E700229D21 /* StatsStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsStorage.swift; sourceTree = "<group>"; };
 		6EB7F9D41F77F80B005F8A25 /* FirstEventDateTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstEventDateTests.swift; sourceTree = "<group>"; };
 		6EB7F9D61F7803D5005F8A25 /* ExecutionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExecutionsTest.swift; sourceTree = "<group>"; };
 		6EB7F9D81F783D1C005F8A25 /* ExecutionsDateTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExecutionsDateTest.swift; sourceTree = "<group>"; };
@@ -41,7 +43,7 @@
 		6EBAFD9B1F76A93F007B6ABF /* WaitForItTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WaitForItTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EBAFDA01F76A93F007B6ABF /* EventsCountTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsCountTests.swift; sourceTree = "<group>"; };
 		6EBAFDA21F76A93F007B6ABF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		6EBAFDAD1F76A9A8007B6ABF /* WaitForIt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitForIt.swift; sourceTree = "<group>"; };
+		6EBAFDAD1F76A9A8007B6ABF /* ScenarioProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenarioProtocol.swift; sourceTree = "<group>"; };
 		6EC6264D1F79594D00DCD91D /* CustomConditionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomConditionsTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -110,7 +112,8 @@
 		6EBAFDAC1F76A99C007B6ABF /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				6EBAFDAD1F76A9A8007B6ABF /* WaitForIt.swift */,
+				6EBAFDAD1F76A9A8007B6ABF /* ScenarioProtocol.swift */,
+				6E5C635E1F88F5E700229D21 /* StatsStorage.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -228,7 +231,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6EBAFDAE1F76A9A8007B6ABF /* WaitForIt.swift in Sources */,
+				6EBAFDAE1F76A9A8007B6ABF /* ScenarioProtocol.swift in Sources */,
+				6E5C635F1F88F5E700229D21 /* StatsStorage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

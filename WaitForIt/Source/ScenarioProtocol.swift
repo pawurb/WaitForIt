@@ -52,6 +52,12 @@ fileprivate struct ConfigStorage {
     static var values: [String: Any?] = [:]
 }
 
+struct Storage<T> {
+    static func call() {
+        print(String(describing: self))
+    }
+}
+
 public extension ScenarioProtocol {
 
     static var customConditions: (() -> Bool)? {
@@ -123,20 +129,11 @@ public extension ScenarioProtocol {
     
     static func triggerEvent(timeNow: Date) {
         config()
-        let newCount = currentEventsCount + 1
-        userDefaults.setValuesForKeys([kDefaultsEventsCount: newCount])
-        
-        if userDefaults.object(forKey: kDefaultsFirstEventDate) == nil {
-            userDefaults.setValuesForKeys([kDefaultsFirstEventDate: timeNow])
-        }
-        userDefaults.setValuesForKeys([kDefaultsLastEventDate: timeNow])
-        
-        userDefaults.synchronize()
+        stats.saveEventStats(timeNow: timeNow)
     }
     
     static func tryToExecute(timeNow: Date, completion: @escaping (Bool) -> Void) {
         config()
-        print(ConfigStorage.values)
         let eventCountConditions = checkEventCountConditions()
         let firstEventDateConditions = checkFirstEventDateConditions(timeNow: timeNow)
         let lastEventDateConditions = checkLastEventDateConditions(timeNow: timeNow)
@@ -157,7 +154,7 @@ public extension ScenarioProtocol {
     private static func checkEventCountConditions() -> Bool {
         let result: Bool
 
-        let currentCount = currentEventsCount
+        let currentCount = stats.currentEventsCount
         if let max = maxEventsPermitted, let min = minEventsRequired {
             result = (max >= currentCount) && (min <= currentCount)
         } else if let max = maxEventsPermitted {
@@ -175,7 +172,7 @@ public extension ScenarioProtocol {
         let result: Bool
         
         if let minSecondsInterval = minSecondsSinceFirstEvent,
-            let firstEventDate = currentFirstEventDate {
+            let firstEventDate = stats.currentFirstEventDate {
             let secondsSinceFirstEvent = timeNow.timeIntervalSince1970 - firstEventDate.timeIntervalSince1970
             
             result = secondsSinceFirstEvent > minSecondsInterval
@@ -190,7 +187,7 @@ public extension ScenarioProtocol {
         let result: Bool
 
         if let minSecondsInterval = minSecondsSinceLastEvent,
-            let lastEventDate = currentLastEventDate {
+            let lastEventDate = stats.currentLastEventDate {
             let secondsSinceLastEvent = timeNow.timeIntervalSince1970 - lastEventDate.timeIntervalSince1970
 
             result = secondsSinceLastEvent > minSecondsInterval
@@ -205,7 +202,7 @@ public extension ScenarioProtocol {
         let result: Bool
         
         if let maxExecutions = maxExecutionsPermitted {
-            result = currentExecutionsCount < maxExecutions
+            result = stats.currentExecutionsCount < maxExecutions
         } else {
             result = true
         }
@@ -217,7 +214,7 @@ public extension ScenarioProtocol {
         let result: Bool
         
         if let minSecondsInterval = minSecondsBetweenExecutions,
-            let lastExecutionDate = currentLastExecutionDate {
+            let lastExecutionDate = stats.currentLastExecutionDate {
             let secondsSinceLastExecution = timeNow.timeIntervalSince1970 - lastExecutionDate.timeIntervalSince1970
             
             result = secondsSinceLastExecution > minSecondsInterval
@@ -246,91 +243,21 @@ public extension ScenarioProtocol {
     
     static func reset() {
         config()
-        [
-            kDefaultsEventsCount,
-            kDefaultsExecutionsCount,
-            kDefaultsFirstEventDate,
-            kDefaultsLastEventDate,
-            kDefaultsLastExecutionDate
-        ].forEach { key in
-            userDefaults.removeObject(forKey: key)
-        }
-        userDefaults.synchronize()
-    }
-    
-    static var currentEventsCount: Int {
-        let currentCount = userDefaults.value(forKey: kDefaultsEventsCount)
-        var count = 0
-        
-        if(currentCount != nil) {
-          count = currentCount as! Int
-        }
-        
-        return count
-    }
-    
-    static var currentExecutionsCount: Int {
-        let currentCount = userDefaults.value(forKey: kDefaultsExecutionsCount)
-        var count = 0
-        
-        if(currentCount != nil) {
-          count = currentCount as! Int
-        }
-        
-        return count
+        stats.reset()
     }
     
     private static func incrementExecutionsCounter() {
-        let newCount = currentExecutionsCount + 1
-        userDefaults.setValuesForKeys([kDefaultsExecutionsCount: newCount])
-        userDefaults.synchronize()
+        stats.incrementExecutionsCounter()
     }
     
     private static func saveLastExecutionDate(timeNow: Date) {
-        userDefaults.setValuesForKeys([kDefaultsLastExecutionDate: timeNow])
-        userDefaults.synchronize()
-    }
-    
-    static var currentFirstEventDate: Date? {
-        return userDefaults.object(forKey: kDefaultsFirstEventDate) as? Date
-    }
-    
-    static var currentLastEventDate: Date? {
-        return userDefaults.object(forKey: kDefaultsLastEventDate) as? Date
-    }
-    
-    static var currentLastExecutionDate: Date? {
-        return userDefaults.object(forKey: kDefaultsLastExecutionDate) as? Date
+        stats.saveLastExecutionDate(timeNow: timeNow)
     }
     
     private static var userDefaults: UserDefaults {
         return UserDefaults.standard
     }
     
-    private static var kDefaultsBase: String {
-        return "net.pabloweb.WaitForIt.\(String(describing: self))"
-    }
-    
-    private static var kDefaultsEventsCount: String {
-        return "\(kDefaultsBase).eventsCount"
-    }
-    
-    private static var kDefaultsExecutionsCount: String {
-        return "\(kDefaultsBase).executionsCount"
-    }
-    
-    private static var kDefaultsFirstEventDate: String {
-        return "\(kDefaultsBase).firstEventDate"
-    }
-    
-    private static var kDefaultsLastEventDate: String {
-        return "\(kDefaultsBase).lastEventDate"
-    }
-    
-    private static var kDefaultsLastExecutionDate: String {
-        return "\(kDefaultsBase).lastExecutionDate"
-    }
-
     private static var kConfigBase: String {
         return String(describing: type(of: self))
     }
@@ -361,5 +288,9 @@ public extension ScenarioProtocol {
 
     private static var minSecondsSinceLastEventKey: String {
         return "\(kConfigBase).minSecondsSinceLastEvent"
+    }
+
+    private static var stats: StatsStorage<Self> {
+        return StatsStorage<Self>()
     }
 }
