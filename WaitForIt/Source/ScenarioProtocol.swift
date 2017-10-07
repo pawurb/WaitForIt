@@ -48,79 +48,42 @@ public protocol ScenarioProtocol {
     static func reset()
 }
 
-fileprivate struct ConfigStorage {
-    static var values: [String: Any?] = [:]
-}
 
-struct Storage<T> {
-    static func call() {
-        print(String(describing: self))
-    }
-}
 
 public extension ScenarioProtocol {
-
     static var customConditions: (() -> Bool)? {
-        get {
-            return ConfigStorage.values[customConditionsKey] as? (() -> Bool)
-        }
-        set {
-            ConfigStorage.values[customConditionsKey] = newValue
-        }
+        get { return config.customConditions }
+        set { config.customConditions = newValue }
     }
 
     static var maxExecutionsPermitted: Int? {
-        get {
-            return ConfigStorage.values[maxExecutionsPermittedKey] as? Int
-        }
-        set {
-            ConfigStorage.values[maxExecutionsPermittedKey] = newValue
-        }
+        get { return config.maxExecutionsPermitted }
+        set { config.maxExecutionsPermitted = newValue }
     }
 
     static var minEventsRequired: Int? {
-        get {
-            return ConfigStorage.values[minEventsRequiredKey] as? Int
-        }
-        set {
-            ConfigStorage.values[minEventsRequiredKey] = newValue
-        }
+        get { return config.minEventsRequired }
+        set { config.minEventsRequired = newValue }
     }
 
     static var minSecondsBetweenExecutions: TimeInterval? {
-        get {
-            return ConfigStorage.values[minSecondsBetweenExecutionsKey] as? TimeInterval
-        }
-        set {
-            ConfigStorage.values[minSecondsBetweenExecutionsKey] = newValue
-        }
+        get { return config.minSecondsBetweenExecutions }
+        set { config.minSecondsBetweenExecutions = newValue }
     }
 
     static var maxEventsPermitted: Int? {
-        get {
-            return ConfigStorage.values[maxEventsPermittedKey] as? Int
-        }
-        set {
-            ConfigStorage.values[maxEventsPermittedKey] = newValue
-        }
+        get { return config.maxEventsPermitted }
+        set { config.maxEventsPermitted = newValue }
     }
 
     static var minSecondsSinceFirstEvent: TimeInterval? {
-        get {
-            return ConfigStorage.values[minSecondsSinceFirstEventKey] as? TimeInterval
-        }
-        set {
-            ConfigStorage.values[minSecondsSinceFirstEventKey] = newValue
-        }
+        get { return config.minSecondsSinceFirstEvent }
+        set { config.minSecondsSinceFirstEvent = newValue }
     }
 
     static var minSecondsSinceLastEvent: TimeInterval? {
-        get {
-            return ConfigStorage.values[minSecondsSinceLastEventKey] as? TimeInterval
-        }
-        set {
-            ConfigStorage.values[minSecondsSinceLastEventKey] = newValue
-        }
+        get { return config.minSecondsSinceLastEvent }
+        set { config.minSecondsSinceLastEvent = newValue }
     }
 
     static func triggerEvent() {
@@ -254,43 +217,12 @@ public extension ScenarioProtocol {
         stats.saveLastExecutionDate(timeNow: timeNow)
     }
     
-    private static var userDefaults: UserDefaults {
-        return UserDefaults.standard
-    }
-    
-    private static var kConfigBase: String {
-        return String(describing: type(of: self))
-    }
-
-    private static var customConditionsKey: String {
-        return "\(kConfigBase).customConditions"
-    }
-
-    private static var maxExecutionsPermittedKey: String {
-        return "\(kConfigBase).maxExecutionsPermitted"
-    }
-
-    private static var minEventsRequiredKey: String {
-        return "\(kConfigBase).minEventsRequired"
-    }
-
-    private static var minSecondsBetweenExecutionsKey: String {
-        return "\(kConfigBase).minSecondsBetweenExecutions"
-    }
-
-    private static var maxEventsPermittedKey: String {
-        return "\(kConfigBase).maxEventsPermitted"
-    }
-
-    private static var minSecondsSinceFirstEventKey: String {
-        return "\(kConfigBase).minSecondsSinceFirstEvent"
-    }
-
-    private static var minSecondsSinceLastEventKey: String {
-        return "\(kConfigBase).minSecondsSinceLastEvent"
-    }
-
     private static var stats: StatsStorage<Self> {
         return StatsStorage<Self>()
+    }
+
+    private static var config: ConfigStorage<Self> {
+        get { return ConfigStorage<Self>() }
+        set {}
     }
 }

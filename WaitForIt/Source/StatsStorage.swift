@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct StatsStorage<T> {
+internal struct StatsStorage<T> {
     private let userDefaults = UserDefaults.standard
 
     func reset() {
